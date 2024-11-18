@@ -4,11 +4,13 @@ import { Home, Error404 } from './pages';
 import { Loader } from './components/shared';
 import Layout from './components/Layout';
 const ProductView = React.lazy(() => import('./pages/ProductView'));
+const SearchView = React.lazy(() => import('./pages/SearchView'));
 
 const AppWithRouting = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout component={<Home />} />} />
+      <Route path="/search/" element={<Layout noFooter={true} component={<SearchView />} />} />
       <Route
         path="/prn/:name/prid/:id"
         element={

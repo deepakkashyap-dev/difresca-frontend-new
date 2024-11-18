@@ -38,28 +38,36 @@ html {
     @apply mx-auto flex-1 px-2 xl:px-0;
     max-width: var(--container-max-width);
   }
+
   ._bg-shade-1 {
     background: var(--green-shade-1);
   }
+
   ._bg-shade-2 {
     background: var(--green-shade-2);
   }
+
   ._text-default {
     @apply text-neutral-700;
   }
+
   ._text-muted {
     @apply text-neutral-500;
   }
+
   ._border {
     border-color: var(--border-default-color);
   }
+
   ._border-muted {
     border-color: var(--border-muted-color);
   }
+
   ._nav {
     @apply fixed inset-x-0 top-0 bg-white sm:h-[86px] z-20;
     box-shadow: var(--nav-shadow);
   }
+
   ._searchbox {
     @apply bg-white border rounded-lg sm:absolute sm:max-w-[300px] md:max-w-[600px] w-full mx-auto lg:mx-2 pl-16 pr-6 flex items-center;
     border-color: var(--border-muted-color);
@@ -67,42 +75,52 @@ html {
     top: 18px;
     height: 50px;
   }
+
   ._coupon:hover {
     box-shadow: var(--couponcard-shadow);
   }
+
   ._modal {
     @apply md:rounded bg-white absolute top-0 left-0 md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 z-20 w-full md:max-w-[496px] overflow-hidden;
     box-shadow: var(--modal-shadow);
   }
+
   ._drawer {
     @apply bg-neutral-100 absolute top-0 bottom-0 right-0 z-20 w-full md:max-w-[360px];
     box-shadow: var(--drawer-shadow);
   }
+
   ._card {
     @apply border _border-muted rounded-lg px-3 pb-3 flex flex-col bg-white transition;
   }
+
   ._card:hover {
     box-shadow: var(--box-shadow);
     border: 0.5px solid var(--theme-green);
   }
+
   ._fab {
     @apply rounded-full cursor-pointer flex items-center justify-center;
     box-shadow: var(--floatingBtn-shadow);
   }
+
   ._add_to_cart {
     @apply h-full w-full rounded-lg uppercase font-bold text-green-700;
     background: rgb(247, 255, 249);
     border: 0.5px solid rgb(12, 131, 31);
   }
+
   ._swinging {
     animation-name: swigning;
     animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
   }
+
   ._wiggle:hover {
     animation: 0.6s ease 0s 2 normal none running wiggle;
   }
+
   ._shadow_sticky {
     box-shadow: var(--sticky-bottom-shadow);
   }
@@ -113,6 +131,58 @@ html {
   animation: loading 1s linear infinite alternate;
 }
 
+._subs-form {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0px;
+  position: relative;
+  width: max-content;
+}
+
+._subs-form>span {
+  position: absolute;
+  left: 15px;
+}
+
+._subs-form>button {
+  position: absolute;
+  right: 10px;
+}
+
+#subscription-email:focus-visible {
+  border: 1px solid #7ED957;
+}
+
+._search-container {
+  display: inline-block;
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
+
+._search-sugg {
+  display: inline-block;
+  text-align: center;
+  color: rgb(105, 105, 105);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 17px;
+  cursor: pointer;
+  background: rgb(255, 255, 255);
+  border: 0.5px solid rgb(207, 207, 207);
+  box-shadow: rgba(28, 28, 28, 0.06) 0px 1px 4px;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+._search-sugg ._text {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 20px;
+  color: rgb(105, 105, 105);
+}
+
 input[type='radio'] {
   accent-color: rgb(12, 131, 31);
 }
@@ -121,18 +191,22 @@ input[type='radio'] {
   ._nav {
     box-shadow: none;
   }
+
   ._header {
     display: grid;
     grid-template-columns: 1fr 60px;
   }
+
   ._header_loc {
     column-span: 1/2;
     grid-row: 1/2;
   }
+
   ._header_login {
     column-span: 2/3;
     grid-row: 1/2;
   }
+
   ._header_search {
     grid-column: 1/3;
     grid-row: 2/3;
@@ -175,12 +249,15 @@ input[type='radio'] {
   0% {
     box-shadow: -38px -6px, -14px 6px, 14px -6px;
   }
+
   33% {
     box-shadow: -38px 6px, -14px -6px, 14px 6px;
   }
+
   66% {
     box-shadow: -38px -6px, -14px 6px, 14px -6px;
   }
+
   100% {
     box-shadow: -38px 6px, -14px -6px, 14px 6px;
   }
