@@ -1,14 +1,17 @@
 import { SetStateAction, useEffect, useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { updateSearch } from '../store/commonStates';
+import { useAppDispatch } from '../hooks/useAppDispatch';
 
 interface SearchBoxProps {
   active: boolean;
 }
 
-const SearchBox: React.FC<SearchBoxProps> = ({ active}) => {
+const SearchBox: React.FC<SearchBoxProps> = ({ active }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   const [searchQuery, setSearchQuery] = useState("");
   // is isSearchActive is true ,means it is searchable 
@@ -19,8 +22,9 @@ const SearchBox: React.FC<SearchBoxProps> = ({ active}) => {
       const params = new URLSearchParams(location.search);
       const query = params.get("q") || "";
       setSearchQuery(query);
+      dispatch(updateSearch(query));
     }
-  }, [location]);
+  }, [location.search]);
 
   // Update the URL when the input value changes
   useEffect(() => {
@@ -34,6 +38,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ active}) => {
   }, [searchQuery]);
 
   const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
+    dispatch(updateSearch(e.target.value));
     setSearchQuery(e.target.value);
   };
 
@@ -49,6 +54,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ active}) => {
         placeholder="Search for products"
         className="outline-none w-full text-[14px]"
         onChange={handleInputChange}
+        value={searchQuery}
       />
     </div>
   );

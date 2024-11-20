@@ -8,6 +8,20 @@ const convertTextToURLSlug = (text: string): string => {
   return clearText.replace(/\s/g, "-")
 }
 
+export const debounce = <T extends (...args: any[]) => void>(
+  func: T,
+  delay: number
+): ((...args: Parameters<T>) => void) => {
+  let timeout: number | undefined;
+  return (...args: Parameters<T>) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
+
 const getCategoryLink = (category: Category): string => {
   const cat = convertTextToURLSlug(category.title);
   const sub = category.subcategories[0];
@@ -42,8 +56,8 @@ const getProducts = () => {
   return products;
 }
 
-const getProductById = (id: string | undefined ) => {
-  if(id) {
+const getProductById = (id: string | undefined) => {
+  if (id) {
     const product = getProducts().filter((item) => item.id === id)[0]
     return product || null
   }

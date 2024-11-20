@@ -1,21 +1,38 @@
-import { useEffect, useState } from "react"
-import { useLocation } from 'react-router-dom';
+import { useEffect, useState, useCallback } from "react"
 import Misc from '../lib/data/layout.json';
 import { ProductItem } from '../utils/types';
 import ProductCard from '../components/ProductCard';
+import { useAppSelector } from '../hooks/useAppSelector';
+import { Loader } from '../components/shared';
+import { debounce } from "../utils/helper";
 
 const SearchView = () => {
-    const location = useLocation();
-    const [searchQuery, setSearchQuery] = useState("");
     const [product, setProduct] = useState<ProductItem[]>([]);
+    const [isLoading, setLoading] = useState(false);
+    const { searchVal } = useAppSelector((state) => state.commonState);
+
+    const fetchResults = async (searchVal: string) => {
+        const filteredProducts = filterByName(Misc, searchVal);
+        setProduct(filteredProducts);
+    };
+
+    const debouncedFetchResults = useCallback(
+        debounce(async (searchVal: string, onComplete: () => void) => {
+            await fetchResults(searchVal); // Wait for fetchResults to complete
+            onComplete(); // Notify when the debounced function completes
+        }, 1000),
+        []
+    );
+
 
     useEffect(() => {
-        const params = new URLSearchParams(location.search);
-        const query = params.get("q") || "";
-        setSearchQuery(query);
-        const filteredProducts = filterByName(Misc, "d");
-        setProduct(filteredProducts);
-    }, [location]);
+        if (searchVal) {
+            setLoading(true);
+            debouncedFetchResults(searchVal, () => setLoading(false)); // Pass a callback to update loading
+        } else {
+            setLoading(false);
+        }
+    }, [searchVal, debouncedFetchResults]);
 
     const filterByName = (data: any[], searchName: any) => {
         const lowerCaseSearchString = searchName.toLowerCase();
@@ -34,11 +51,11 @@ const SearchView = () => {
         });
     };
 
-
     const suggestions = ["maggie", "maggie noodels", "maggie sunji masala"]
 
     return (
         <div className="_container">
+            {isLoading && <Loader fullscreen />}
             <div className="flex-1" >
                 {suggestions.map(item =>
                     <div className='_search-container'>
@@ -49,9 +66,9 @@ const SearchView = () => {
                 )}
             </div>
             {
-                searchQuery &&
+                searchVal &&
                 <div className="my-2">
-                    <div>Showing results for <strong>{searchQuery}</strong></div>
+                    <div>Showing results for <strong>{searchVal}</strong></div>
                 </div>
             }
 
