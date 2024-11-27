@@ -2,6 +2,7 @@ import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { hide as hideModal } from '../store/modal';
 import DiscountInfo from './home/DiscountInfo';
+import { LoginPage } from '../components/auth';
 
 const Modal = () => {
   const { type, data } = useAppSelector((state) => state.modal.modalData);
@@ -14,7 +15,7 @@ const Modal = () => {
   const output =
     type === 'discount' ? (
       <DiscountInfo data={data} onClose={handleClose} />
-    ) : null;
+    ) : (type === 'login' ? <LoginPage onClose={handleClose} /> : null);
 
   return (
     <div className="fixed inset-0 h-screen w-screen z-50 overflow-hidden p-4">

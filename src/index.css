@@ -182,6 +182,90 @@ html {
   line-height: 20px;
   color: rgb(105, 105, 105);
 }
+.login-form {
+  margin: 24px 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-phone >input {
+  box-sizing: border-box;
+  font-size: 14px;
+  padding: 15px 20px 15px 50px;
+  width: 100%;
+  font-weight: 600;
+}
+
+.login-phone {
+  display: inline-block;
+  line-height: normal;
+  position: relative;
+}
+
+.login-phone::after {
+  color: #333;
+  content: '+91';
+  font-weight: 600;
+  font-size: 14px;
+  left: 15px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
+.otp-container {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin-top: 20px;
+}
+
+h2 {
+  margin: 10px 0;
+  color: #333;
+}
+
+.otp-input-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.otp-input {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.resend-text {
+  margin-top: 20px;
+  color: #888;
+  font-size: 14px;
+}
+
+.resend-button {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.resend-button:hover {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+
 
 input[type='radio'] {
   accent-color: rgb(12, 131, 31);

@@ -4,19 +4,26 @@ import { Link, useLocation } from 'react-router-dom';
 import { CartButton } from '../cart';
 import LocationPicker from '../LocationPicker';
 import SearchBox from '../SearchBox';
+import { show as showModal } from '../../store/modal';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 const Header = () => {
   const location = useLocation();
+  const dispatch = useAppDispatch();
   const [isSearchActive, setSearchActive] = useState(false);
 
   useEffect(() => {
     if (location.pathname.includes("/search")) {
       setSearchActive(true)
     }
-    else{
+    else {
       setSearchActive(false)
     }
   }, [location.pathname])
+
+  const showDiscountInfo = (): void => {
+    dispatch(showModal({ type: 'login' }));
+  };
 
   return (
     <header className="_nav px-2 sm:px-0">
@@ -35,7 +42,7 @@ const Header = () => {
         <div className="flex-1 relative _header_search">
           <SearchBox active={isSearchActive} />
         </div>
-        <div className="flex items-center _header_login justify-center cursor-pointer max-w-[80px] lg:max-w-[160px] w-full">
+        <div onClick={showDiscountInfo} className="flex items-center _header_login justify-center cursor-pointer max-w-[80px] lg:max-w-[160px] w-full">
           <span className="flex items-center rounded-[6px] h-[50px] py-2 px-3 font-bold text-[14px] text-sm bg-theme-green cursor-pointer text-white">
             <FaRegUser size={24} className='mr-1' /> Login
           </span>
