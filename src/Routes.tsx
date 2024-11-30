@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Home, Error404 } from './pages';
+import { Home, Error404, Account } from './pages';
+import { Profile, AddressList, OrderList } from './components/Account'
 import { Loader } from './components/shared';
 import Layout from './components/Layout';
 const ProductView = React.lazy(() => import('./pages/ProductView'));
@@ -11,6 +12,11 @@ const AppWithRouting = () => {
     <Routes>
       <Route path="/" element={<Layout component={<Home />} />} />
       <Route path="/search/" element={<Layout noFooter={true} component={<SearchView />} />} />
+      <Route path="/account" element={<Layout component={<Account />} />} >
+        <Route path='address' element={<AddressList />} />
+        <Route path='profile' element={<Profile />} />
+        <Route path='order' element={<OrderList />} />
+      </Route>
       <Route
         path="/prn/:name/prid/:id"
         element={
