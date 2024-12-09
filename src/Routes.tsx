@@ -12,7 +12,7 @@ const AppWithRouting = () => {
     <Routes>
       <Route path="/" element={<Layout component={<Home />} />} />
       <Route path="/search/" element={<Layout noFooter={true} component={<SearchView />} />} />
-      <Route path="/account" element={<Layout component={<Account />} />} >
+      <Route path="/account" element={<Layout noFooter={true} component={<Account />} />} >
         <Route path='address' element={<AddressList />} />
         <Route path='profile' element={<Profile />} />
         <Route path='order' element={<OrderList />} />

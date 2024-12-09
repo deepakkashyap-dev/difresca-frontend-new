@@ -230,3 +230,15 @@ export type CartItem = {
   billPrice: number;
   discount: number;
 };
+
+export type Address = {
+  addressId: string;
+  name: string;
+  phoneNo: string;
+  addressLineOne: string;
+  addressLineTwo: string;
+  pincode: string;
+  locality: string;
+  city: string;
+  landmark: string;
+};
