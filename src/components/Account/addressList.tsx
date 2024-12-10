@@ -1,5 +1,7 @@
 import { useAppSelector } from "../../hooks/useAppSelector";
 import { HiLocationMarker } from "react-icons/hi";
+import { BiEdit } from "react-icons/bi";
+import { MdOutlineDelete } from "react-icons/md";
 
 const AddressList = () => {
     const { addressList } = useAppSelector((state) => state.account);
@@ -12,23 +14,23 @@ const AddressList = () => {
                         {
                             addressList.map((item) => {
                                 return (
-                                    <div key={item.addressId} className="flex cursor-pointer items-center text-left justify-center mb-3 bg-white shadow-sm border rounded-md p-5">
-                                        <span className="ml-5">
-                                            <HiLocationMarker />
+                                    <div key={item.addressId} className="flex cursor-pointer items-center text-left justify-center mb-3 bg-white shadow-sm border rounded-md p-5 hover:shadow-lg transition-shadow duration-300">
+                                        <span className="ml-5 w-5 h-5">
+                                            <HiLocationMarker className="w-full h-full" />
                                         </span>
                                         <div className="ml-4 w-full mr-5 flex items-center justify-between w-4/5">
                                             <div>
                                                 <div className="text-base font-bold">{item.name}</div>
                                                 <span className="text-center text-gray-400 mb-2 text-sm font-normal">
-                                                    {item.addressLineOne}, {item.addressLineTwo}, {item.locality}, {item.city}, PIN {item.pincode}, Mob:-{item.phoneNo}
+                                                    {item.addressLineOne}, {item.addressLineTwo}, {item.locality}, {item.city}, PIN {item.pincode}, mob {item.phoneNo}
                                                 </span>
                                             </div>
                                             <div className="ml-5 flex items-end justify-end">
-                                                <div className="mr-5 cursor-pointer">
-
+                                                <div className="mr-5 cursor-pointer w-5 h-5 hover:text-blue-500">
+                                                    <BiEdit className="w-full h-full" />
                                                 </div>
-                                                <div className="mr-5 cursor-pointer">
-
+                                                <div className="mr-5 cursor-pointer w-5 h-5 hover:text-red-500">
+                                                    <MdOutlineDelete className="w-full h-full" />
                                                 </div>
                                             </div>
                                         </div>
