@@ -6,35 +6,18 @@ const address = [
         addressId: '1',
         name: 'John Doe',
         phoneNo: '1234567890',
-        addressLineOne: '123 Main St',
-        addressLineTwo: 'Apt 4B',
+        building: 'blitz apartment',
+        street_no: '123',
+        street_name: 'Elm St',
         pincode: '12345',
         locality: 'Downtown',
-        city: 'Metropolis',
-        landmark: 'Near Central Park'
+        landmark: 'Near Central Park',
+        formattedAddress: '123, Elm St, blitz apartment, Downtown, Gotham - 12345',
+        cordinates: {
+            lat: 12.345,
+            lng: 98.765,
+        },
     },
-    {
-        addressId: '2',
-        name: 'Jane Smith',
-        phoneNo: '0987654321',
-        addressLineOne: '456 Elm St',
-        addressLineTwo: '',
-        pincode: '67890',
-        locality: 'Uptown',
-        city: 'Gotham',
-        landmark: 'Next to the Museum'
-    },
-    {
-        addressId: '3',
-        name: 'Alice Johnson',
-        phoneNo: '5555555555',
-        addressLineOne: '789 Oak St',
-        addressLineTwo: 'Suite 101',
-        pincode: '11223',
-        locality: 'Midtown',
-        city: 'Star City',
-        landmark: 'Opposite the Library'
-    }
 ]
 
 const orderList = [

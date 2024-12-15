@@ -235,10 +235,15 @@ export type Address = {
   addressId: string;
   name: string;
   phoneNo: string;
-  addressLineOne: string;
-  addressLineTwo: string;
+  building: string;
+  street_no: string;
+  street_name: string;
   pincode: string;
   locality: string;
-  city: string;
-  landmark: string;
+  landmark?: string;
+  formattedAddress?: string;
+  cordinates?: {
+    lat: number;
+    lng: number;
+  };
 };

@@ -21,7 +21,7 @@ const Header = () => {
     }
   }, [location.pathname])
 
-  const showDiscountInfo = (): void => {
+  const showLoginPopup = (): void => {
     dispatch(showModal({ type: 'login' }));
   };
 
@@ -42,7 +42,7 @@ const Header = () => {
         <div className="flex-1 relative _header_search">
           <SearchBox active={isSearchActive} />
         </div>
-        <div onClick={showDiscountInfo} className="flex items-center _header_login justify-center cursor-pointer max-w-[80px] lg:max-w-[160px] w-full">
+        <div onClick={showLoginPopup} className="flex items-center _header_login justify-center cursor-pointer max-w-[80px] lg:max-w-[160px] w-full">
           <span className="flex items-center rounded-[6px] h-[50px] py-2 px-3 font-bold text-[14px] text-sm bg-theme-green cursor-pointer text-white">
             <FaRegUser size={24} className='mr-1' /> Login
           </span>

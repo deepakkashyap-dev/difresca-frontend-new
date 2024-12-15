@@ -1,28 +1,46 @@
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { HiLocationMarker } from "react-icons/hi";
+import { MdPinDrop } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";
+import { FaPhoneAlt } from "react-icons/fa";
+import { show as showModal } from '../../store/modal';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 const AddressList = () => {
+    const dispatch = useAppDispatch();
     const { addressList } = useAppSelector((state) => state.account);
     console.log(addressList);
+    const showAddressPopup = (): void => {
+        dispatch(showModal({ type: 'addressPicker' }));
+    };
     return (
         <div>
+            <div className="pb-4 lg:block">
+                <div className="flex justify-end">
+                    <button onClick={showAddressPopup} className="bg-theme-green text-white px-3 py-2 rounded-md font-bold">Add New Address</button>
+                </div>
+            </div>
             {
                 addressList.length > 0 ?
                     <>
                         {
                             addressList.map((item) => {
                                 return (
-                                    <div key={item.addressId} className="flex cursor-pointer items-center text-left justify-center mb-3 bg-white shadow-sm border rounded-md p-5 hover:shadow-lg transition-shadow duration-300">
-                                        <span className="ml-5 w-5 h-5">
-                                            <HiLocationMarker className="w-full h-full" />
-                                        </span>
-                                        <div className="ml-4 w-full mr-5 flex items-center justify-between w-4/5">
+                                    <div key={item.addressId} className="flex items-center cursor-pointer mb-3 bg-white shadow-sm border rounded-md p-3 hover:shadow-lg transition-shadow duration-300">
+                                        <div className="w-10 h-10 mr-4 flex items-center justify-center border border-gray-300 rounded-md p-1">
+                                            <MdPinDrop className="w-full h-full" />
+                                        </div>
+                                        <div className="w-full flex items-center justify-between ">
                                             <div>
-                                                <div className="text-base font-bold">{item.name}</div>
-                                                <span className="text-center text-gray-400 mb-2 text-sm font-normal">
-                                                    {item.addressLineOne}, {item.addressLineTwo}, {item.locality}, {item.city}, PIN {item.pincode}, mob {item.phoneNo}
+                                                <div className="flex text-base font-bold">
+                                                    {item.name}
+                                                    <span className="ml-5 text-gray-400 flex items-center">
+                                                        <FaPhoneAlt className="w-7" /> {item.phoneNo}
+                                                    </span>
+                                                </div>
+                                                <div className="text-gray-400 text-sm font-bold">{item.building}</div>
+                                                <span className="text-gray-400 text-sm font-bold">
+                                                    {item.formattedAddress}
                                                 </span>
                                             </div>
                                             <div className="ml-5 flex items-end justify-end">

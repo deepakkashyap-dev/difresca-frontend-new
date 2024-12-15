@@ -36,7 +36,7 @@ const profile = () => {
                     />
                 </div>
                 <button type="submit" className="px-5 py-2 bg-theme-green text-white border-none rounded cursor-pointer">
-                    Submit
+                    Update
                 </button>
             </form>
         </div>
