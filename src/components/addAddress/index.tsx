@@ -4,7 +4,7 @@ import { ImSearch } from "react-icons/im";
 import { IoMdClose, IoIosHome } from "react-icons/io";
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { addAddress } from '../../store/account';
-const REACT_APP_GOOGLE_API_KEY = "AIzaSyCC2-F1KbTzTr877vd4_t_hvBmqX42ZMfU";
+import { IoClose } from 'react-icons/io5';
 
 const libraries: ("places" | "drawing" | "geometry" | "visualization")[] = ['places'];
 interface Props {
@@ -19,7 +19,7 @@ const AddressPicker: React.FC<Props> = ({ onClose }) => {
     const dispatch = useAppDispatch();
 
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: REACT_APP_GOOGLE_API_KEY || '',
+        googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY || '',
         libraries: libraries,
     });
 
@@ -125,8 +125,16 @@ const AddressPicker: React.FC<Props> = ({ onClose }) => {
 
     return (
         <div className='flex md:h-[600px]'>
+            <button
+                type="button"
+                onClick={onClose}
+                className="absolute text-gray-400 cursor-pointer p-3 right-1 top-1"
+            >
+                <IoClose size={24} />
+            </button>
             {!isLoaded ? (
-                <h1>Loading...</h1>
+                <div className='map-container md:w-1/2'>Loading...</div>
+                // <h1>Loading...</h1>
             ) : (
                 <GoogleMap
                     mapContainerClassName="map-container md:w-1/2"
@@ -211,7 +219,7 @@ const AddressPicker: React.FC<Props> = ({ onClose }) => {
                     <button type="submit"
                         className="bg-theme-green-400 text-white font-bold p-2 rounded hover:bg-theme-green-600 w-full"
                     >
-                        Add Address
+                        Save Address
                     </button>
                 </form>
 
