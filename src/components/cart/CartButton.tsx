@@ -1,6 +1,5 @@
 import { FaShoppingCart } from 'react-icons/fa';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from '../../hooks/useAppSelector';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { showCart } from '../../store/ui';
 
 const CartButton = () => {

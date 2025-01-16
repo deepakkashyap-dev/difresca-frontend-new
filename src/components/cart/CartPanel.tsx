@@ -1,7 +1,6 @@
 import { IoClose } from 'react-icons/io5';
 import { FiChevronRight } from 'react-icons/fi';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from '../../hooks/useAppSelector';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { hideCart } from '../../store/ui';
 import { CartItem, ProductItem } from '../../utils/types';
 import AddToCartButton from '../shared/AddToCartButton';

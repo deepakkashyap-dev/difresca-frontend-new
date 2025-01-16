@@ -1,5 +1,5 @@
 import Carousel from 'react-multi-carousel';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppDispatch } from '../../hooks';
 import { show as showModal } from '../../store/modal';
 import { DiscountOffer } from '../../utils/types';
 import Offers from '../../lib/data/discountOffers.json';

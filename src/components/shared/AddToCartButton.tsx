@@ -1,7 +1,6 @@
 import React from 'react';
 import { IoAddSharp, IoRemoveSharp } from 'react-icons/io5';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
-import { useAppSelector } from '../../hooks/useAppSelector';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addItem, removeItem } from '../../store/cart';
 import { CartProduct } from '../../utils/types';
 
@@ -39,9 +38,8 @@ const AddToCartButton = ({ product, size }: ButtonProps) => {
 
   return itemCount > 0 ? (
     <div
-      className={`flex h-full w-full justify-around rounded-lg uppercase font-bold text-sm bg-theme-green cursor-pointer ${
-        size === 'lg' ? 'text-lg' : 'text-normal'
-      }`}
+      className={`flex h-full w-full justify-around rounded-lg uppercase font-bold text-sm bg-theme-green cursor-pointer ${size === 'lg' ? 'text-lg' : 'text-normal'
+        }`}
     >
       <button
         onClick={(e) => remove(e)}

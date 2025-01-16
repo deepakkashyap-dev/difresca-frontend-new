@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { FaRegUser } from 'react-icons/fa';
+import { FaRegUser, FaCaretDown } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import { CartButton } from '../cart';
 import LocationPicker from '../LocationPicker';
 import SearchBox from '../SearchBox';
 import { show as showModal } from '../../store/modal';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const Header = () => {
   const location = useLocation();
@@ -25,6 +25,8 @@ const Header = () => {
     dispatch(showModal({ type: 'login' }));
   };
 
+  const data = useAppSelector((state) => state?.persistedReducers?.auth) // useSelector is a hook from react-redux that allows you to extract data from the Redux store state, using a selector function.
+  console.log(data, "--data")
   return (
     <header className="_nav px-2 sm:px-0">
       <div className="_header sm:flex h-full">
@@ -43,12 +45,28 @@ const Header = () => {
           <SearchBox active={isSearchActive} />
         </div>
         <div onClick={showLoginPopup} className="flex items-center _header_login justify-center cursor-pointer max-w-[80px] lg:max-w-[160px] w-full">
-          <span className="flex items-center rounded-[6px] h-[50px] py-2 px-3 font-bold text-[14px] text-sm bg-theme-green cursor-pointer text-white">
-            <FaRegUser size={24} className='mr-1' /> Login
-          </span>
-          <span className="sm:hidden _text-default">
-            <FaRegUser size={22} />
-          </span>
+          {data?.isLoggedIn ?
+            <>
+              <span className="flex items-center rounded-[6px] h-[50px] py-2 px-3 font-normal text-[21px] text-sm cursor-pointer text-slate-500 hover:text-slate-700">
+                Account
+                <FaCaretDown size={22} className='mr-1' />
+              </span>
+              <span className="sm:hidden _text-default">
+                <FaCaretDown size={22} />
+              </span>
+            </>
+            :
+            <>
+              <span className="flex items-center rounded-[6px] h-[50px] py-2 px-3 font-bold text-[14px] text-sm bg-theme-green cursor-pointer text-white">
+                <FaRegUser size={24} className='mr-1' />
+                Login
+              </span>
+              <span className="sm:hidden _text-default">
+                <FaRegUser size={22} />
+              </span>
+            </>
+          }
+
         </div>
         <div className="py-2 hidden md:flex h-full items-center mr-8 ml-3">
           <CartButton />

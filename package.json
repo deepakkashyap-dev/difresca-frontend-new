@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "proxy": "http://difresca.com",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -12,13 +13,15 @@
     "@react-google-maps/api": "^2.20.3",
     "@reduxjs/toolkit": "^1.8.3",
     "@tailwindcss/line-clamp": "^0.4.0",
+    "axios": "^1.7.9",
     "dotenv": "^16.4.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.4.0",
     "react-multi-carousel": "^2.8.2",
     "react-redux": "^8.0.2",
-    "react-router-dom": "^6.3.0"
+    "react-router-dom": "^6.3.0",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

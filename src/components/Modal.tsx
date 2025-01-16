@@ -1,5 +1,4 @@
-import { useAppDispatch } from '../hooks/useAppDispatch';
-import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { hide as hideModal } from '../store/modal';
 import DiscountInfo from './home/DiscountInfo';
 import { LoginPage } from '../components/auth';

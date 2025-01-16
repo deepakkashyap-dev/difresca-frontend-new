@@ -2,7 +2,7 @@ import React, { useState, useMemo, useCallback } from 'react';
 import { GoogleMap, Autocomplete, useLoadScript } from '@react-google-maps/api';
 import { ImSearch } from "react-icons/im";
 import { IoMdClose, IoIosHome } from "react-icons/io";
-import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppDispatch } from '../../hooks';
 import { addAddress } from '../../store/account';
 import { IoClose } from 'react-icons/io5';
 

@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { IoClose, IoArrowBackSharp } from 'react-icons/io5';
+import { useAppDispatch } from '../../hooks';
+import { login as authLogin } from '../../store/auth';
+// import { sendOtpAPI, verifyOtpAPI } from '../../utils/Api/AppService/authApi';
+import { useAuth } from '../../contexts/authContext';
 
 interface Props {
     onClose: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -11,6 +15,7 @@ const LoginPage = ({ onClose }: Props) => {
     const [timer, setTimer] = useState(8); // Set timer for 8 seconds
     const [otp, setOtp] = useState(new Array(4).fill(''));
     const [isOtpSent, setIsOtpSent] = useState(false);
+    const { handleSendOtp, handleVerifyOtp, isAuthenticated } = useAuth();
 
     const isOtpComplete = otp.every(value => value.trim() !== '');
 
@@ -20,19 +25,29 @@ const LoginPage = ({ onClose }: Props) => {
         setMobileNumber(numericValue);
     };
 
-    const handleMobileSubmit = (e: React.FormEvent) => {
+    const dispatch = useAppDispatch();
+    const handleMobileSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Here you would typically send the mobile number to your backend to generate/send OTP
-        setIsOtpSent(true);
-        setStep(2); // Move to OTP step
-        setTimer(59)
+        try {
+            await handleSendOtp({ mobileNumber });
+            setIsOtpSent(true);
+            setStep(2); // Move to OTP step
+            setTimer(59)
+        } catch (err) {
+            console.log(err);
+        }
     };
 
-    const handleOtpSubmit = (e: React.FormEvent) => {
+    const handleOtpSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Here you would verify the OTP with your backend
-        console.log('OTP Submitted:', otp);
-        alert('Login Successful');
+        try {
+            const res = await handleVerifyOtp({ mobileNumber, otp: otp.join('') });
+            dispatch(authLogin({ isLoggedIn: true, refreshToken: res?.data?.refreshToken, accessToken: res?.data?.accessToken, mobileNumber: mobileNumber }));
+            window.location.reload();
+        }
+        catch (err: any) {
+            console.log(err.response.data);
+        }
     };
 
     // Handle input change

@@ -2,7 +2,7 @@ import { SetStateAction, useEffect, useState } from 'react';
 import { FiSearch } from 'react-icons/fi';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { updateSearch } from '../store/commonStates';
-import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useAppDispatch } from '../hooks';
 
 interface SearchBoxProps {
   active: boolean;

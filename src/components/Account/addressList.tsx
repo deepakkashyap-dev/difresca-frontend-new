@@ -4,7 +4,7 @@ import { BiEdit } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
 import { show as showModal } from '../../store/modal';
-import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useAppDispatch } from '../../hooks';
 
 const AddressList = () => {
     const dispatch = useAppDispatch();
