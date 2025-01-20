@@ -6,11 +6,26 @@ import LocationPicker from '../LocationPicker';
 import SearchBox from '../SearchBox';
 import { show as showModal } from '../../store/modal';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getHomepageBlock, fetchCategoryData } from '../../utils/Api/AppService/dashboardApi';
+import { HeaderCategory } from '../CategoryProducts';
 
 const Header = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const [isSearchActive, setSearchActive] = useState(false);
+
+  const { homepageData: blocks = [], homepageLoading, homepageError } = useAppSelector((state) => state.homepage);
+  const { categoryData, categoryLoading, categoryError } = useAppSelector((state) => state.homepage);
+  const data = useAppSelector((state) => state?.persistedReducers?.auth)
+
+  useEffect(() => {
+    if (!blocks && !homepageLoading && !homepageError) {
+      dispatch(getHomepageBlock());
+    }
+    if (!categoryData && !categoryLoading && !categoryError) {
+      dispatch(fetchCategoryData());
+    }
+  }, [blocks, categoryData, dispatch, homepageLoading, categoryLoading]);
 
   useEffect(() => {
     if (location.pathname.includes("/search")) {
@@ -25,10 +40,8 @@ const Header = () => {
     dispatch(showModal({ type: 'login' }));
   };
 
-  const data = useAppSelector((state) => state?.persistedReducers?.auth) // useSelector is a hook from react-redux that allows you to extract data from the Redux store state, using a selector function.
-  console.log(data, "--data")
   return (
-    <header className="_nav px-2 sm:px-0">
+    <header className={`_nav px-2 sm:px-0 ${isSearchActive && 'shadow-header-inset'}`}>
       <div className="_header sm:flex h-full">
         <div className="hidden sm:flex max-w-[150px] md:max-w-[178px] w-full cursor-pointer justify-center border-r _border-light">
           <Link to={'/'}>
@@ -72,6 +85,9 @@ const Header = () => {
           <CartButton />
         </div>
       </div>
+      {location.pathname.includes("/cat") &&
+        <HeaderCategory data={categoryData || []} />
+      }
     </header>
   );
 };

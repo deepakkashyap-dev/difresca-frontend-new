@@ -1,18 +1,20 @@
 import { useEffect, useState, useCallback } from "react"
-import Misc from '../lib/data/layout.json';
 import { ProductItem } from '../utils/types';
 import ProductCard from '../components/ProductCard';
-import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { updateSearch } from '../store/commonStates';
 import { Loader } from '../components/shared';
 import { debounce } from "../utils/helper";
+import { searchProductApi } from "../utils/Api/AppService/productApi";
 
 const SearchView = () => {
     const [product, setProduct] = useState<ProductItem[]>([]);
     const [isLoading, setLoading] = useState(false);
     const { searchVal } = useAppSelector((state) => state.commonState);
+    const dispatch = useAppDispatch();
 
     const fetchResults = async (searchVal: string) => {
-        const filteredProducts = filterByName(Misc, searchVal);
+        const filteredProducts = await searchProductApi(searchVal)
         setProduct(filteredProducts);
     };
 
@@ -24,7 +26,6 @@ const SearchView = () => {
         []
     );
 
-
     useEffect(() => {
         if (searchVal) {
             setLoading(true);
@@ -34,31 +35,21 @@ const SearchView = () => {
         }
     }, [searchVal, debouncedFetchResults]);
 
-    const filterByName = (data: any[], searchName: any) => {
-        const lowerCaseSearchString = searchName.toLowerCase();
-        return data.flatMap(item => {
-            if (Array.isArray(item.objects)) {
-                return item.objects.flatMap((subItem: { data?: { products?: any[] } }) => {
-                    if (subItem?.data?.products) {
-                        return subItem.data.products.flat().filter((product: { name?: string }) =>
-                            product.name?.toLowerCase().includes(lowerCaseSearchString)
-                        );
-                    }
-                    return [];
-                });
-            }
-            return [];
-        });
-    };
+    useEffect(() => {// Cleanup  function
+        const cleanup = () => {
+            dispatch(updateSearch(''));
+        };
+        return cleanup;
+    }, [dispatch]);
 
     const suggestions = ["maggie", "maggie noodels", "maggie sunji masala"]
 
     return (
         <div className="_container">
-            {isLoading && <Loader fullscreen />}
+            {isLoading && <Loader className="" />}
             <div className="flex-1" >
                 {suggestions.map(item =>
-                    <div className='_search-container'>
+                    <div className='_search-container' key={item}>
                         <span className='_search-sugg'>
                             <div className='_text'>{item}</div>
                         </span>
@@ -68,14 +59,14 @@ const SearchView = () => {
             {
                 searchVal &&
                 <div className="my-2">
-                    <div>Showing results for <strong>{searchVal}</strong></div>
+                    <div>Showing results for <strong>"{searchVal}"</strong></div>
                 </div>
             }
 
             <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
                 {product?.map((item, i) => (
-                    <div className="col-span-1">
-                        <ProductCard key={i} data={item} />
+                    <div className="col-span-1" key={i} >
+                        <ProductCard data={item} />
                     </div>
                 ))}
             </div>

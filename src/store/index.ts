@@ -8,6 +8,7 @@ import uiReducer from './ui'
 import commonReducer from "./commonStates";
 import accountReducer from "./account";
 import authReducer from "./auth";
+import homepageReducer from './homePage';
 
 const persistConfig = {
   key: "root",
@@ -26,7 +27,8 @@ const store = configureStore({
     cart: cartReducer,
     modal: modalReducer,
     commonState: commonReducer,
-    account: accountReducer
+    account: accountReducer,
+    homepage: homepageReducer,
   },
   devTools: import.meta.env.MODE !== "production",
   middleware: (getDefaultMiddleware) =>

@@ -1,6 +1,6 @@
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState, useRef } from 'react';
 import { FiSearch } from 'react-icons/fi';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { updateSearch } from '../store/commonStates';
 import { useAppDispatch } from '../hooks';
 
@@ -12,10 +12,10 @@ const SearchBox: React.FC<SearchBoxProps> = ({ active }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useAppDispatch();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   // is isSearchActive is true ,means it is searchable 
-
 
   useEffect(() => {
     if (location.pathname.includes("/search")) {
@@ -37,6 +37,13 @@ const SearchBox: React.FC<SearchBoxProps> = ({ active }) => {
     }
   }, [searchQuery]);
 
+
+  useEffect(() => {
+    if (active) {
+      inputRef.current?.focus();
+    }
+  }, [active]);
+
   const handleInputChange = (e: { target: { value: SetStateAction<string>; }; }) => {
     dispatch(updateSearch(e.target.value));
     setSearchQuery(e.target.value);
@@ -44,12 +51,15 @@ const SearchBox: React.FC<SearchBoxProps> = ({ active }) => {
 
 
   return (
-    <div className="_searchbox" onClick={() => !active ? navigate({ pathname: "/search/" }) : {}} >
+    <div
+      className={`_searchbox ${active && 'lg:!max-w-[-webkit-fill-available]'}`}
+      onClick={() => !active ? navigate({ pathname: "/search/" }) : {}}  >
       <FiSearch
         className="absolute top-1/2 -translate-y-1/2 left-4 text-gray-400"
         size={24}
       />
       <input
+        ref={inputRef}
         type="text"
         placeholder="Search for products"
         className="outline-none w-full text-[14px]"

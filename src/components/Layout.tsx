@@ -5,7 +5,7 @@ import BrandPromotion from './BrandPromotion';
 import CartButtonBig from './cart/CartButtonBig';
 import Modal from './Modal';
 import { CartPanel } from './cart';
-import { useAppSelector } from '../hooks/useAppSelector';
+import { useAppSelector } from '../hooks';
 
 type Props = {
   noFooter?: boolean;

@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../hooks/useAppSelector";
+import { useAppSelector } from "../../hooks";
 import { IoCheckmarkCircleSharp } from "react-icons/io5";
 import { IoCloseCircleSharp } from "react-icons/io5";
 import { GoIssueOpened } from "react-icons/go";

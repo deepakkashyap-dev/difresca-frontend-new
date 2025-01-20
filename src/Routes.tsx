@@ -6,22 +6,40 @@ import { Loader } from './components/shared';
 import Layout from './components/Layout';
 const ProductView = React.lazy(() => import('./pages/ProductView'));
 const SearchView = React.lazy(() => import('./pages/SearchView'));
+const CategoryProductView = React.lazy(() => import('./pages/CategoryProdView'));
 
 const AppWithRouting = () => {
   return (
     <Routes>
       <Route path="/" element={<Layout component={<Home />} />} />
-      <Route path="/search/" element={<Layout noFooter={true} component={<SearchView />} />} />
-      <Route path="/account" element={<Layout noFooter={true} component={<Account />} />} >
+      <Route path="/search/" element={<Suspense fallback={<Loader />}><Layout noFooter={true} component={<SearchView />} /></Suspense>} />
+      <Route path="/account" element={<Suspense fallback={<Loader />}><Layout noFooter={true} component={<Account />} /></Suspense>} >
         <Route path='address' element={<AddressList />} />
         <Route path='profile' element={<Profile />} />
         <Route path='order' element={<OrderList />} />
       </Route>
+
       <Route
-        path="/prn/:name/prid/:id"
+        path="/product/:name/pid/:id"
         element={
-          <Suspense fallback={<Loader fullscreen />}>
+          <Suspense fallback={<Loader />}>
             <Layout component={<ProductView />} />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/deal/:name/pid/:id"
+        element={
+          <Suspense fallback={<Loader />}>
+            <Layout component={<ProductView />} />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/cat/:name/pid/:catId/:id"
+        element={
+          <Suspense fallback={<Loader />}>
+            <Layout component={<CategoryProductView />} />
           </Suspense>
         }
       />

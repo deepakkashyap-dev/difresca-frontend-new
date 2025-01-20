@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../hooks/useAppSelector";
+import { useAppSelector } from "../../hooks";
 import { MdPinDrop } from "react-icons/md";
 import { BiEdit } from "react-icons/bi";
 import { MdOutlineDelete } from "react-icons/md";

@@ -1,13 +1,27 @@
 import axiosInstance from '../config';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import { dashboard } from '../collections';
 
-const getHomepageBlock = async () => {
+// Async thunk for fetching homepage data
+const getHomepageBlock = createAsyncThunk('homepage/fetchHomepageData', async (_, { rejectWithValue }) => {
     try {
-        return await axiosInstance.get(dashboard['GET_DASHBOARD_BLOCKS']);
-    } catch (error) {
-        console.error('Error fetching homepage block:', error);
-        throw error;
+        const response = await axiosInstance.get(dashboard['GET_DASHBOARD_BLOCKS']);
+        return response.data; 
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data || 'Failed to fetch homepage data');
     }
-};
+}
+);
 
-export { getHomepageBlock };
+
+// Async thunk for fetching category data
+const fetchCategoryData = createAsyncThunk('homepage/fetchCategoryData', async (_, { rejectWithValue }) => {
+    try {
+        const response = await axiosInstance.get(dashboard['GET_CATEGORY_DATA']);
+        return response.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data || 'Failed to fetch homepage data');
+    }
+});
+
+export { getHomepageBlock, fetchCategoryData };

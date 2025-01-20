@@ -1,7 +1,7 @@
 import ChemistProducts from '../lib/data/products/chemistProducts.json';
 import DairyProducts from '../lib/data/products/dairyProducts.json';
 import SnacksProducts from '../lib/data/products/snacksProducts.json';
-import { CartProduct, Category, ProductItem, ProductItemDetailed } from "./types";
+import { CartProduct, GetCategoryLinkType, GetDealLinkType, GetProductLinkType, ProductItem, ProductItemDetailed } from "./types";
 
 const convertTextToURLSlug = (text: string): string => {
   const clearText = text.replace(/[&\/\\#,+()$~%.":*?<>{}]/g, '').toLowerCase();
@@ -22,11 +22,19 @@ export const debounce = <T extends (...args: any[]) => void>(
 };
 
 
-const getCategoryLink = (category: Category): string => {
-  const cat = convertTextToURLSlug(category.title);
-  const sub = category.subcategories[0];
-  const subcat = convertTextToURLSlug(sub.title);
-  return `category/${cat}/${subcat}/${category.id}/${sub.id}`
+const getCategoryLink = (data: GetCategoryLinkType): string => {
+  const subcat = convertTextToURLSlug(data.title);
+  return `cat/${subcat}/pid/${data.category_id}/${data.id}`;
+}
+
+const getDealLink = (data: GetDealLinkType): string => {
+  const dealName = convertTextToURLSlug(data.heading);
+  return `deal/${dealName}/pid/${data.id}`;
+}
+
+const getProductLink = (data: GetProductLinkType): string => {
+  const prodName = convertTextToURLSlug(data.title);
+  return `product/${prodName}/pid/${data.id}`;
 }
 
 const shuffleItems = (unshuffled: any[] | undefined): any[] => {
@@ -63,5 +71,14 @@ const getProductById = (id: string | undefined) => {
   }
 }
 
+const getDiscountPercent = (originalPrice: number, discountedPrice: number) => {
+  // Check if the original price is greater than zero to avoid division by zero
+  if (originalPrice <= 0) {
+    return 0; // Return 0 if the original price is not valid
+  }
+  const discountAmount = originalPrice - discountedPrice;
+  const discountPercentage = (discountAmount / originalPrice) * 100;
+  return Math.round(discountPercentage * 100) / 100;
+}
 
-export { convertTextToURLSlug, getCategoryLink, shuffleItems, getProductForCart, getProductById }
+export { convertTextToURLSlug, getCategoryLink, getDealLink, getProductLink, shuffleItems, getProductForCart, getProductById, getDiscountPercent };

@@ -42,7 +42,7 @@ const Footer = () => {
   const allCategories = Categories.map((cat) => ({
     id: cat.id,
     text: cat.title,
-    link: getCategoryLink(cat),
+    link: ""//getCategoryLink(cat),
   }));
 
   const allBrands: BrandLink[] = Brands.map((brand) => ({

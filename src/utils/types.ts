@@ -22,6 +22,21 @@ export type Category = {
   subcategories: SubCategory[]
 }
 
+export type GetCategoryLinkType = {
+  category_id: number;
+  id: number;
+  title: string;
+}
+
+export type GetDealLinkType = {
+  heading: string;
+  id: number;
+}
+
+export type GetProductLinkType = {
+  title: string;
+  id: number;
+}
 
 export type DiscountOffer = {
   button_cta_text: string;
