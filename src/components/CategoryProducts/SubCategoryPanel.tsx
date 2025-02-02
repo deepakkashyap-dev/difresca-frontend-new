@@ -5,7 +5,6 @@ const SubCategoryPanel = ({ data, selected_id }: any) => {
     const navigate = useNavigate();
     const handleHeaderClick = (e: any) => {
         const link = getCategoryLink({ title: e.title, category_id: e.category_id, id: e.id });
-        console.log(link);
         navigate(`/${link}`);
     };
     return (

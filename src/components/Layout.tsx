@@ -24,7 +24,7 @@ const Layout = ({ noFooter, component }: Props) => {
     <>
       <div>
         <Header />
-        <main className="pt-28 sm:pt-24">{component}</main>
+        <main className="pt-24 sm:pt-20">{component}</main>
         {!noFooter && (
           <>
             {/* <BrandPromotion /> */}

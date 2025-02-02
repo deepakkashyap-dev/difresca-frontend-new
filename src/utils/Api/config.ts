@@ -115,7 +115,7 @@ axiosInstance.interceptors.response.use(
 
 
 // Default retry and retryDelay configuration for all requests
-axiosInstance.defaults.retry = 3; // Max 3 retries
+axiosInstance.defaults.retry = 0; // Max 3 retries
 axiosInstance.defaults.retryDelay = 1000; // 1-second delay between retries
 
 // Export the configured instance

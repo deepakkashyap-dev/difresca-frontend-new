@@ -1,12 +1,9 @@
 import { Link } from 'react-router-dom';
-import { ProductItemDetailed } from '../../utils/types';
+import { getCategoryLink } from "../../utils/helper";
 
-const Breadcrumb = (props: ProductItemDetailed) => {
-  const { level0_category, level1_category, name } = props;
-
-  const category = level0_category[0];
-  const subcategory = level1_category[0];
-
+const Breadcrumb = ({ data }: any) => {
+  const { category, subcategory, name } = data;
+  const link = getCategoryLink({ title: name, category_id: category.id, id: subcategory.id });
   return (
     <div className="text-xs flex flex-wrap text-black font-medium">
       <span className="cursor-pointer hover:text-[#0c831f]">
@@ -14,13 +11,13 @@ const Breadcrumb = (props: ProductItemDetailed) => {
       </span>
       <span>&nbsp; / &nbsp;</span>
       <span className="cursor-pointer hover:text-[#0c831f]">
-        <Link to="/">{category.name}</Link>
+        <Link to={`/${link}`}>{category.name}</Link>
       </span>
       {subcategory && (
         <>
           <span>&nbsp; / &nbsp;</span>
           <span className="cursor-pointer hover:text-[#0c831f]">
-            <Link to="/">{subcategory.name}</Link>
+            <Link to={`/${link}`}>{subcategory.name}</Link>
           </span>
         </>
       )}

@@ -1,4 +1,3 @@
-import { ProductRow } from '../../utils/types';
 import ItemsCarousel from '../shared/ItemsCarousel';
 import { Link } from 'react-router-dom';
 import { getDealLink } from '../../utils/helper'

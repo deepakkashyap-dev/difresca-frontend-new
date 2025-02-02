@@ -1,12 +1,14 @@
 import React, { Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Home, Error404, Account } from './pages';
+import { Home, Error404 } from './pages';
 import { Profile, AddressList, OrderList } from './components/Account'
 import { Loader } from './components/shared';
 import Layout from './components/Layout';
 const ProductView = React.lazy(() => import('./pages/ProductView'));
 const SearchView = React.lazy(() => import('./pages/SearchView'));
 const CategoryProductView = React.lazy(() => import('./pages/CategoryProdView'));
+const DealProductView = React.lazy(() => import('./pages/DealProductView'));
+const Account = React.lazy(() => import('./pages/Account'));
 
 const AppWithRouting = () => {
   return (
@@ -22,7 +24,7 @@ const AppWithRouting = () => {
       <Route
         path="/product/:name/pid/:id"
         element={
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<Loader className="bg-lime-100" />}>
             <Layout component={<ProductView />} />
           </Suspense>
         }
@@ -30,15 +32,15 @@ const AppWithRouting = () => {
       <Route
         path="/deal/:name/pid/:id"
         element={
-          <Suspense fallback={<Loader />}>
-            <Layout component={<ProductView />} />
+          <Suspense fallback={<Loader className="bg-lime-100" />}>
+            <Layout component={<DealProductView />} />
           </Suspense>
         }
       />
       <Route
         path="/cat/:name/pid/:catId/:id"
         element={
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<Loader className="bg-lime-100" />}>
             <Layout component={<CategoryProductView />} />
           </Suspense>
         }

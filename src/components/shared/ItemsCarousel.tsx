@@ -13,37 +13,37 @@ const responsive = {
   uhdDesktop: {
     breakpoint: { max: 1920, min: 1440 },
     items: 7,
-    slidesToSlide: 2,
+    slidesToSlide: 1,
     partialVisibilityGutter: -10,
   },
   superLargeDesktop: {
     breakpoint: { max: 1440, min: 1200 },
     items: 6,
-    slidesToSlide: 2,
+    slidesToSlide: 1,
     partialVisibilityGutter: 10,
   },
   largeDesktop: {
     breakpoint: { max: 1200, min: 1024 },
     items: 5,
-    slidesToSlide: 2,
+    slidesToSlide: 1,
     partialVisibilityGutter: 10,
   },
   desktop: {
     breakpoint: { max: 1024, min: 767 },
     items: 4,
-    slidesToSlide: 4,
+    slidesToSlide: 1,
     partialVisibilityGutter: 10,
   },
   tablet: {
     breakpoint: { max: 767, min: 560 },
     items: 3,
-    slidesToSlide: 3,
+    slidesToSlide: 1,
     partialVisibilityGutter: 10,
   },
   mobile: {
     breakpoint: { max: 560, min: 420 },
     items: 2,
-    slidesToSlide: 2,
+    slidesToSlide: 1,
     partialVisibilityGutter: 10,
   },
   minimobile: {
@@ -70,7 +70,7 @@ const ItemsCarousel = (props: Props) => {
           shouldResetAutoplay={false}
           infinite={false}
           itemClass="text-center"
-          partialVisible
+          partialVisible={true}
         >
           {items?.map((item, i) => (
             <ProductCard key={i} data={item} />

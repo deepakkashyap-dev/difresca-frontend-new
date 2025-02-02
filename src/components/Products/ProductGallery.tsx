@@ -18,13 +18,14 @@ const responsive = {
   },
 };
 
-const ProductGallery = ({ images }: { images: string[] }) => {
+const ProductGallery = ({ images }: { images: any }) => {
+  const image_list = images.map((item: any) => item.image);
   const [coverIndex, setCoverIndex] = useState(0);
   return (
     <div className="flex flex-col mb-6 lg:mb-0 lg:border-b _border-muted">
       <div className="hidden lg:flex justify-center">
         <img
-          src={images[coverIndex]}
+          src={image_list[coverIndex]}
           className="h-[480px] w-[480px] object-contain"
           alt=""
         />
@@ -47,12 +48,11 @@ const ProductGallery = ({ images }: { images: string[] }) => {
                 showDots={true}
                 itemClass="text-center"
               >
-                {images?.map((item, i) => (
+                {image_list?.map((item: string, i: number) => (
                   <div
                     key={i}
-                    className={`w-[374px] h-[374px] lg:h-[66px] lg:w-[66px] mx-auto rounded-lg cursor-pointer lg:border ${
-                      coverIndex === i ? 'border-[#0c831f]' : '_border-muted'
-                    } overflow-hidden`}
+                    className={`w-[374px] h-[374px] lg:h-[66px] lg:w-[66px] mx-auto rounded-lg cursor-pointer lg:border ${coverIndex === i ? 'border-[#0c831f]' : '_border-muted'
+                      } overflow-hidden`}
                     onClick={() => setCoverIndex(i)}
                   >
                     <img

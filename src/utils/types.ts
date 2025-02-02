@@ -129,12 +129,8 @@ interface NextAvailableAt {
 }
 
 export interface Attribute {
-  title: string;
-  url?: any;
-  detail: string;
-  value: string;
-  help_text: string;
-  type: string;
+  attribute_name: string;
+  attribute_value: string;
 }
 
 export interface AttributeCollection {

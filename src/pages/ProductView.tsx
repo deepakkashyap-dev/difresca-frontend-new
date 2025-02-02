@@ -1,39 +1,46 @@
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductDetails, MoreProducts } from '../components/Products';
+import Loader from '../components/shared/Loader';
+import { getProductsByIdApi } from '../utils/Api/AppService/productApi';
 import NotAvailable from '../components/NotAvailable';
-import { getProductById } from '../utils/helper';
 
-
+interface ProductData {
+  product: any;
+  related_products: any[]
+}
 const ProductView = () => {
   let { id } = useParams();
+  const [state, setState] = useState<{ loading: boolean; productData: ProductData; error: string }>({ loading: false, productData: { product: null, related_products: [] }, error: '' });
 
-  const productFound = getProductById(id);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (id) {
+        setState(prev => ({ ...prev, loading: true }));
+        try {
+          const filtered_prod = await getProductsByIdApi(id);
+          setState(prev => ({ ...prev, loading: false, productData: filtered_prod }));
+        } catch (error: any) {
+          setState(prev => ({ ...prev, loading: false, error: error.message }));
+        }
+      }
+    };
+    fetchProducts();
+  }, [id]);
 
-  if (!productFound) {
+  if (state.loading) {
+    window.scrollTo(0, 0);
+    return <Loader className="bg-lime-100" />;
+  }
+  if (state.error && !state.loading) {
     window.scrollTo(0, 0);
     return <NotAvailable />;
   }
-  const productItem = productFound.product_data;
-  const productInfo = {
-    product: productItem.data.product,
-    varients: productItem.data.variants_info,
-  };
-  // console.log('productInfo', productInfo)
-
-  const moreProducts = productItem.objects.map((obj) => {
-    const { products, title } = obj.data;
-    return {
-      products,
-      title,
-    };
-  });
-
+  console.log(state.productData.related_products, "-state.productData.product")
   return (
     <div className="_container">
-      <ProductDetails {...productInfo} />
-      {moreProducts.map((products, i) => (
-        <MoreProducts key={i} {...products} />
-      ))}
+      {state.productData.product !== null && <ProductDetails {...state.productData.product} />}
+      {state.productData.related_products !== null && <MoreProducts title='More Products' products={state.productData.related_products}  />}
     </div>
   );
 };

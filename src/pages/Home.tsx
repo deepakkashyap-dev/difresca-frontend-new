@@ -26,7 +26,7 @@ const Home = () => {
 
   return (
     <div className="_container">
-      {homepageLoading && <Loader fullscreen />}
+      {homepageLoading && <Loader className='bg-lime-100' />}
       {blocks && blocks.map((block: any) => renderBlock(block))}
     </div>
   );

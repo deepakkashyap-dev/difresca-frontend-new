@@ -10,7 +10,7 @@ interface HeroBannerProps {
 
 const HeroArea = ({ data }: any) => {
   return (
-    <section className="mt-1 xl:mt-4">
+    <section className="xl:py-4 sm:py-2">
       {
         data.is_scrollable ?
           <div className="mx-4 relative pb-2 pt-4">

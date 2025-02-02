@@ -1,6 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { SubCategoryPanel, ProductListing } from "../components/CategoryProducts";
+import { getProductsBySubCategoryApi } from "../utils/Api/AppService/productApi";
 import { useAppSelector } from "../hooks";
 
 interface Category {
@@ -8,11 +9,29 @@ interface Category {
   subcategories: any[];
 }
 
-const CategoryProductView = () => {
-  const { catId, id } = useParams();
+interface Product {
+  id: string;
+}
 
-  const { categoryData: catData = [] as Category[], categoryLoading: loading, categoryError: error } = useAppSelector((state) => state.homepage);
+const CategoryProductView = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(false);
+  const { name, catId, id } = useParams();
+
+  const { categoryData: catData = [] as Category[], categoryLoading, categoryError } = useAppSelector((state) => state.homepage);
   const availableSubcat = catData?.filter((category: Category) => category.id == catId)[0]?.subcategories || []
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      if (id) {
+        setLoading(true);
+        const filtered_prod = await getProductsBySubCategoryApi(id);
+        setProducts(filtered_prod);
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, [name, catId, id]);
 
   return (
     <div className="flex _container">
@@ -22,8 +41,8 @@ const CategoryProductView = () => {
       </div>
 
       {/* Right Panel: Products */}
-      <div className="w-3/4 relative  bg-lime-100 p-2">
-        <ProductListing is_left_enable={true} />
+      <div className="w-3/4 relative bg-lime-100 p-3">
+        <ProductListing is_left_enable={true} products={products} loading={loading} />
       </div>
     </div>
   );

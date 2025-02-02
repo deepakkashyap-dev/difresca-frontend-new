@@ -4,7 +4,7 @@ import { CartProduct, ProductItem } from '../utils/types';
 import { getProductLink, getDiscountPercent } from '../utils/helper';
 
 // const ProductCard = ({ data }: { data: ProductItem }) => {
-const ProductCard = ({ data }: any) => {
+const ProductCard = ({ data, classname }: any) => {
   const navigate = useNavigate();
   const { id: product_id, title, unit, unit_price, unit_type } = data;
   const { discounted_rate, offer_label: offer, thumbnail } = data;
@@ -24,7 +24,7 @@ const ProductCard = ({ data }: any) => {
   };
   return (
     <div
-      className="_card h-[270px] w-[180px] relative flex cursor-pointer mb-2 mx-auto sm:mx-0"
+      className={`_card h-[270px] relative flex cursor-pointer mb-2 mx-auto sm:mx-0 ${classname ? classname : 'w-[180px]'}`}
       onClick={handleProductClick}
     >
       {offer && (
