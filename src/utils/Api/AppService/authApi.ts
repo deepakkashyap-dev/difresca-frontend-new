@@ -36,5 +36,15 @@ const verifyOtpAPI = async (mobile: string, otp: string): Promise<any> => {
     }
 }
 
+const refreshAccessToken = async (refreshToken: string): Promise<string | null> => {
+    try {
+        const response = await axiosInstance.post(auth['REFRESH_TOKEN'], { refresh: refreshToken });
+        return response.data.access;
+    } catch (error) {
+        console.error('Failed to refresh access token:', error);
+        return null;
+    }
+};
 
-export { sendOtpAPI, verifyOtpAPI };
+
+export { sendOtpAPI, verifyOtpAPI, refreshAccessToken };

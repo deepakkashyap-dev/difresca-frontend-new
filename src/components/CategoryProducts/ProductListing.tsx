@@ -15,7 +15,7 @@ const ProductListing = ({ is_left_enable = false, products, loading }: any) => {
         <div className="flex justify-center items-center w-full">
             <img src="/img404.webp" alt="not found" className="lg:h-70 md:h-67" />
         </div>) : (
-        <div className={`justify-items-center grid grid-cols-2 sm:grid-cols-2 ${is_left_enable ? 'mt-10 gap-2 md:grid-cols-3 lg:grid-cols-5' : 'p-3 gap-4 md:grid-cols-4 lg:grid-cols-6'} `}>
+        <div className={`justify-items-center grid grid-cols-2 sm:grid-cols-2 ${is_left_enable ? 'mt-12 gap-2 md:grid-cols-3 lg:grid-cols-5' : 'p-3 gap-4 md:grid-cols-4 lg:grid-cols-6'} `}>
             {products.map((product: { id: Key | null | undefined; }) => (
                 <div key={product.id} className="w-full">
                     <ProductCard data={product} classname="w-full" />

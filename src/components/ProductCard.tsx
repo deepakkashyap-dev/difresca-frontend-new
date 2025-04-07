@@ -3,20 +3,10 @@ import AddToCartButton from './shared/AddToCartButton';
 import { CartProduct, ProductItem } from '../utils/types';
 import { getProductLink, getDiscountPercent } from '../utils/helper';
 
-// const ProductCard = ({ data }: { data: ProductItem }) => {
 const ProductCard = ({ data, classname }: any) => {
   const navigate = useNavigate();
   const { id: product_id, title, unit, unit_price, unit_type } = data;
   const { discounted_rate, offer_label: offer, thumbnail } = data;
-
-  const cartProduct: CartProduct = {
-    id: product_id.toString(),
-    title: title,
-    subTitle: unit,
-    image: thumbnail,
-    price: discounted_rate || unit_price,
-    mrp: unit_price,
-  };
 
   const handleProductClick = () => {
     const link = getProductLink({ title, id: product_id });
@@ -54,7 +44,7 @@ const ProductCard = ({ data, classname }: any) => {
             </div>
           )}
           <div className="h-9 w-[90px] shadow-md shadow-slate-400 bottom-[10px] right-[4px] absolute rounded-lg">
-            <AddToCartButton product={cartProduct} />
+            <AddToCartButton product_id={product_id} />
           </div>
         </div>
       </div>

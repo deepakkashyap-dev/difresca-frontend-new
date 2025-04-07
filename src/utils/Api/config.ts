@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import store from '../../store';
 import { showLoader, hideLoader } from '../../store/ui';
+import { show as showModal } from '../../store/modal';
+import { isTokenExpired } from '../../utils/helper';
 
 // Extend AxiosRequestConfig to include showLoader flag
 declare module 'axios' {
@@ -26,7 +28,12 @@ const axiosInstance: AxiosInstance = axios.create(baseConfig);
 // Request interceptor
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+
+        const state = store.getState();
+        const token = state.persistedReducers.auth.accessToken;
+
+        // Check if the token has expired using its payload
+
         // Set Axios Defaults
         axios.defaults.withCredentials = true; // Include cookies in requests
         axios.defaults.xsrfCookieName = 'csrftoken'; // Cookie name where CSRF token is stored
@@ -64,22 +71,24 @@ axiosInstance.interceptors.response.use(
             store.dispatch(hideLoader());
         }
 
-        // Log the error
-        console.error(error);
-
         if (!error.response) {
             console.error('Network Error:', error.message);
             return Promise.reject(new Error('Network Error: Please check your connection.'));
         }
 
+        // Check if the error is due to a 401 Unauthorized status
+        if (error.response.status === 401) {
+            // Open login modal
+            store.dispatch(showModal({ type: 'login' }));
+            return Promise.reject(error);
+        }
+        // Check if the request is retryable
         const config = error.config;
 
-        // Check if the request is retryable
         if (!config || !config.retry) {
             return Promise.reject(error);
         }
 
-        // Check for specific status codes to avoid retrying
         if (error.response && [401, 403].includes(error.response.status)) {
             // Handle unauthorized or forbidden errors
             return Promise.reject(error);

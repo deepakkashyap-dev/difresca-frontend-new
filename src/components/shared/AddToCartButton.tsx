@@ -1,42 +1,56 @@
 import React from 'react';
 import { IoAddSharp, IoRemoveSharp } from 'react-icons/io5';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { addItem, removeItem } from '../../store/cart';
+// import { addItemToGuestCart, removeItemFromGuestCart } from '../../store/cart';
+import { addToCart, removeFromCart } from '../../utils/Api/AppService/cartApi';
 import { CartProduct } from '../../utils/types';
+import { isTokenExpired } from '../../utils/helper';
+import { show as showModal } from '../../store/modal';
+
 
 type ButtonProps = {
-  product: CartProduct;
+  product_id: number | string,//CartProduct;
   size?: 'sm' | 'lg';
 };
-const AddToCartButton = ({ product, size }: ButtonProps) => {
+
+const AddToCartButton = ({ product_id, size }: ButtonProps) => {
   const { cartItems } = useAppSelector((state) => state.cart);
+  const { isLoggedIn, refreshToken, accessToken } = useAppSelector((state) => state?.persistedReducers?.auth);
+
   const dispatch = useAppDispatch();
 
-  const itemInCart = cartItems.filter(
-    (item) => item.product.id === product.id
-  )[0];
-  const itemCount = itemInCart ? itemInCart.quantity : 0;
+  const reduxItemCount = React.useMemo(() => {
+    const item = cartItems.find(
+      (item) => item.product_id === Number(product_id)
+    );
+    return item ? item.quantity : 0;
+  }, [cartItems, product_id]);
+
+  const [localItemCount, setLocalItemCount] = React.useState(reduxItemCount);
+
+  React.useEffect(() => {
+    setLocalItemCount(reduxItemCount);
+  }, [reduxItemCount]);
 
   const add = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    dispatch(addItem({ ...product }));
+    if (isLoggedIn && !isTokenExpired(accessToken)) {
+      setLocalItemCount(prev => prev + 1);
+      dispatch(addToCart({ productId: product_id, quantity: 1 }));
+    }
+    else {
+      dispatch(showModal({ type: 'login' }));
+    }
   };
 
   const remove = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    dispatch(removeItem(product.id));
+    const item = cartItems.find((item) => item.product_id === Number(product_id));
+    if (!item) return;
+    setLocalItemCount(prev => prev - 1);
+    dispatch(removeFromCart({ cartItemId: item?.id, quantity: 1 })); 
   };
-
-  const handleItemAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    dispatch(
-      addItem({
-        ...product,
-      })
-    );
-  };
-
-  return itemCount > 0 ? (
+  return localItemCount > 0 ? (
     <div
       className={`flex h-full w-full justify-around rounded-lg uppercase font-bold text-sm bg-theme-green cursor-pointer ${size === 'lg' ? 'text-lg' : 'text-normal'
         }`}
@@ -49,7 +63,7 @@ const AddToCartButton = ({ product, size }: ButtonProps) => {
         <IoRemoveSharp size={18} className="text-white" />
       </button>
       <span className="flex items-center justify-center text-white">
-        {itemCount}
+        {localItemCount}
       </span>
       <button
         onClick={(e) => add(e)}
@@ -63,7 +77,7 @@ const AddToCartButton = ({ product, size }: ButtonProps) => {
     <button
       type="button"
       className={`_add_to_cart ${size === 'lg' ? 'text-md' : 'text-sm'}`}
-      onClick={(e) => handleItemAdd(e)}
+      onClick={(e) => add(e)}
     >
       Add
     </button>

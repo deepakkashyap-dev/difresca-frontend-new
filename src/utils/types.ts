@@ -232,14 +232,21 @@ export type CartProduct = {
   image?: string;
   price: number;
   mrp: number;
+  unit?: string;
+  unit_type?: string;
+  discounted_rate?: number;
+  unit_price?: number;
 };
 
 export type CartItem = {
-  product: CartProduct;
+  id: any
+  product?: CartProduct;
+  product_id: number;
   quantity: number;
   totalPrice: number;
   billPrice: number;
   discount: number;
+  total_price?: number;
 };
 
 export type Address = {

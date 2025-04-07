@@ -36,10 +36,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const response = await sendOtpAPI(data.mobileNumber);
             return response;
         } catch (error) {
-            console.error("Error sending OTP:", error);
             throw error; // Re-throw to handle in the component
-        } 
-      
+        }
+
     };
     const handleVerifyOtp = async (data: LoginData) => {
         if (!data.mobileNumber || !data.otp) {
@@ -50,7 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             return response; // Return the API response
         } catch (error: any) {
             throw error; // Re-throw to handle in the component
-        } 
+        }
     };
 
     return (
@@ -63,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 export const useAuth = () => {
     const context = useContext(AuthContext);
     if (!context) {
-      throw new Error("useAuth must be used within an AuthProvider");
+        throw new Error("useAuth must be used within an AuthProvider");
     }
     return context;
-  };
+};

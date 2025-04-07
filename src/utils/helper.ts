@@ -2,6 +2,7 @@ import ChemistProducts from '../lib/data/products/chemistProducts.json';
 import DairyProducts from '../lib/data/products/dairyProducts.json';
 import SnacksProducts from '../lib/data/products/snacksProducts.json';
 import { CartProduct, GetCategoryLinkType, GetDealLinkType, GetProductLinkType, ProductItem } from "./types";
+import { jwtDecode } from 'jwt-decode';
 
 const convertTextToURLSlug = (text: string): string => {
   const clearText = text.replace(/[&\/\\#,+()$~%.":*?<>{}]/g, '').toLowerCase();
@@ -69,4 +70,11 @@ const getDiscountPercent = (originalPrice: number, discountedPrice: number) => {
   return Math.round(discountPercentage * 100) / 100;
 }
 
-export { convertTextToURLSlug, getCategoryLink, getDealLink, getProductLink, shuffleItems, getProductById, getDiscountPercent };
+// Utility function to check if token is expired
+const isTokenExpired = (token: string): boolean => {
+  if (!token) return true;
+  const { exp } = jwtDecode<{ exp: number }>(token);
+  return Date.now() >= exp * 1000;
+};
+
+export { convertTextToURLSlug, getCategoryLink, getDealLink, getProductLink, shuffleItems, getProductById, getDiscountPercent, isTokenExpired };

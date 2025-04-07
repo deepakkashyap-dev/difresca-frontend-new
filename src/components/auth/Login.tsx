@@ -4,6 +4,8 @@ import { useAppDispatch } from '../../hooks';
 import { login as authLogin } from '../../store/auth';
 // import { sendOtpAPI, verifyOtpAPI } from '../../utils/Api/AppService/authApi';
 import { useAuth } from '../../contexts/authContext';
+import { showToast } from '../../store/ui';
+
 
 interface Props {
     onClose: (e: React.MouseEvent<HTMLButtonElement>) => void
@@ -33,8 +35,10 @@ const LoginPage = ({ onClose }: Props) => {
             setIsOtpSent(true);
             setStep(2); // Move to OTP step
             setTimer(59)
-        } catch (err) {
-            console.log(err);
+        } catch (err: any) {
+            if (err.status === 429) {
+                dispatch(showToast({ type: 'error', message: 'Too many requests. Please try again later.' }));
+            };
         }
     };
 

@@ -8,14 +8,6 @@ const ProductDetails = (props: any) => {
   // const allVarients = [product, ...varients];
   // const [itemIndex, setItemIndex] = useState<number>(0);
   // const currentProduct = allVarients[itemIndex];
-  const productAsCartItem = {
-    id: props.id.toString(),
-    title: props.title,
-    subTitle: props.unit,
-    image: props.thumbnail,
-    price: props.discounted_rate || props.unit_price,
-    mrp: props.unit_price,
-  }
 
   return (
     <div className="relative grid lg:grid-cols-2 lg:border-b _border-muted -mt-2">
@@ -46,7 +38,7 @@ const ProductDetails = (props: any) => {
               />
             </div> */}
             <div className="my-4 h-12 w-[130px]">
-              <AddToCartButton size="lg" product={productAsCartItem} />
+              <AddToCartButton size="lg" product_id={props.id.toString()} />
             </div>
             <div className="lg:hidden mt-8">
               <h4 className="text-2xl font-medium _text-muted">

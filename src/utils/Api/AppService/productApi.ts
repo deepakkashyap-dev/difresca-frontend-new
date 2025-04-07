@@ -1,5 +1,4 @@
 import axiosInstance from '../config';
-import { createAsyncThunk } from '@reduxjs/toolkit';
 import { product } from '../collections';
 
 const searchProductApi = async (keyword: string): Promise<any> => {
