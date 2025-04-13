@@ -7,3 +7,8 @@
   RewriteRule . /index.html [L]
   RewriteRule ^ /index.html [L]
 </IfModule>
+
+# Fix MIME types
+<IfModule mod_mime.c>
+  AddType application/javascript js mjs
+</IfModule>
