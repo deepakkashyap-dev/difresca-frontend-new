@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { showCart } from '../../store/ui';
 
 const CartButton = () => {
-  const { billAmount, totalQuantity } = useAppSelector((state) => state.cart);
+  const { totalQuantity } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
 
   return (

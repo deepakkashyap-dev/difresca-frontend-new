@@ -8,6 +8,8 @@ type InitialState = {
   cartItems: CartItem[];
   cartId: string;
   totalQuantity: number;
+  totalAmount?: number;
+  billAmount: number;
   discount: number;
   distance?: number;
   deliveryCharge?: number;
@@ -19,6 +21,8 @@ const initialState: InitialState = {
   cartItems: [],
   cartId: '',
   totalQuantity: 0,
+  totalAmount: 0,
+  billAmount: 0,
   discount: 0,
   distance: undefined,
   deliveryCharge: undefined,

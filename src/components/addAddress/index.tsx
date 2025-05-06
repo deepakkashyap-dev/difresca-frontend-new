@@ -206,7 +206,18 @@ const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
                         fullscreenControl: false,
                         mapTypeControl: false,
                         streetViewControl: false,
+                        restriction: {
+                            latLngBounds: {
+                                north: -26.5,  // approximate northern limit of Brisbane
+                                south: -27.7,  // approximate southern limit of Brisbane
+                                west: 152.5,   // approximate western limit of Brisbane
+                                east: 153.3    // approximate eastern limit of Brisbane
+                            },
+                            strictBounds: true, // set true to enforce bounds strictly
+                        }
                     }}
+
+
                 >
                     <div className="relative w-full p-2 pt-3">
                         <Autocomplete onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)} onPlaceChanged={handlePlaceChanged}>
