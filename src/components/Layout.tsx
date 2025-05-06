@@ -1,4 +1,4 @@
-import Footer from './shared/Footer';
+import { Footer } from './shared';
 
 type Props = {
   noFooter?: boolean;

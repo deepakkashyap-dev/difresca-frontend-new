@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductDetails, MoreProducts } from '../components/Products';
-import Loader from '../components/shared/Loader';
+import { Loader } from '../components/shared';
 import { getProductsByIdApi } from '../utils/Api/AppService/productApi';
 import NotAvailable from '../components/NotAvailable';
 
@@ -40,7 +40,7 @@ const ProductView = () => {
   return (
     <div className="_container">
       {state.productData.product !== null && <ProductDetails {...state.productData.product} />}
-      {state.productData.related_products !== null && <MoreProducts title='More Products' products={state.productData.related_products}  />}
+      {state.productData.related_products !== null && <MoreProducts title='More Products' products={state.productData.related_products} />}
     </div>
   );
 };

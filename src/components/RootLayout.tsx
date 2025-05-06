@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import Header from './shared/Header';
+import { Header } from './shared';
 import { Outlet } from 'react-router-dom';
 import CartButtonBig from './cart/CartButtonBig';
 import Modal from './Modal';

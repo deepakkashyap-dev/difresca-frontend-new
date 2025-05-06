@@ -24,6 +24,9 @@ module.exports = {
       fontFamily: {
         cursive: ['cursive'],
       },
+      height: {
+        'fill': '-webkit-fill-available'
+      }
     },
   },
   plugins: [require('@tailwindcss/line-clamp')],

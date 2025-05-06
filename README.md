@@ -1,15 +1,60 @@
-# BringIt (just like Blinkit)
+# DiFresca Frontend (New)
 
-BringIt is a cloned version of BlinkIt (formerly Grofers) which is an online supermarket application to buy Fruits, Veggies, Snacks, Milk & more and get delivery safely & hygienically to your home.
+## Overview
+This is the new frontend implementation for DiFresca project, built with modern web technologies.
 
-![bringit-cover](https://user-images.githubusercontent.com/11155266/183999445-125f7cd8-57fc-46fd-a209-9aadde210888.png)
+## Getting Started
 
-### Features
-One can browse through various items, see their details, see similar products, add items to cart, view or edit them.
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
 
-[Check live demo](https://blinkit-clone.surge.sh)
+### Installation
+1. Clone the repository
+```bash
+git clone [repository-url]
+cd difresca-frontend-new
+```
 
-### Tools and Technologies
-The application is built with [React](https://reactjs.org/) and [Vite](https://vitejs.dev/) with sole purpose of practising the basics and implementation of [Redux-Toolkit](https://redux-toolkit.js.org/), while building something beautiful to showcase. 
+2. Install dependencies
+```bash
+npm install
+# or
+yarn install
+```
 
-This has the homepage and the product details page recreated using [TailwindCSS](https://tailwindcss.com/). 
+3. Run development server
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+### Environment Setup
+Create a `.env` file in the root directory and add necessary environment variables:
+```
+REACT_APP_API_URL=your_api_url
+```
+
+## Project Structure
+```
+src/
+├── components/
+├── pages/
+├── services/
+├── utils/
+├── assets/
+└── styles/
+```
+
+## Available Scripts
+- `npm start` - Runs the app in development mode
+- `npm build` - Builds the app for production
+- `npm test` - Runs the test suite
+- `npm lint` - Runs the linter
+
+## Contributing
+Please read CONTRIBUTING.md for details on our code of conduct and the process for submitting pull requests.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details

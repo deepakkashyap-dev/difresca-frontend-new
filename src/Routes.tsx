@@ -5,11 +5,13 @@ import { Profile, AddressList, OrderList } from './components/Account'
 import { Loader } from './components/shared';
 import Layout from './components/Layout';
 import RootLayout from './components/RootLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 const ProductView = React.lazy(() => import('./pages/ProductView'));
 const SearchView = React.lazy(() => import('./pages/SearchView'));
 const CategoryProductView = React.lazy(() => import('./pages/CategoryProdView'));
 const DealProductView = React.lazy(() => import('./pages/DealProductView'));
 const Account = React.lazy(() => import('./pages/Account'));
+const CheckoutPage = React.lazy(() => import('./pages/CheckoutPage'));
 
 const AppWithRouting = () => {
   return (
@@ -17,12 +19,28 @@ const AppWithRouting = () => {
       <Route element={<RootLayout />}>
         <Route path="/" element={<Layout component={<Home />} />} />
         <Route path="/search/" element={<Suspense fallback={<Loader />}><Layout noFooter={true} component={<SearchView />} /></Suspense>} />
-        <Route path="/account/" element={<Suspense fallback={<Loader />}><Layout noFooter={true} component={<Account />} /></Suspense>} >
+        <Route
+          path="/account/"
+          element={
+            <ProtectedRoute>
+              <Suspense fallback={<Loader />}>
+                <Layout noFooter={true} component={<Account />} />
+              </Suspense>
+            </ProtectedRoute>
+          }
+        >
           <Route path='address' element={<AddressList />} />
           <Route path='profile' element={<Profile />} />
           <Route path='order' element={<OrderList />} />
           <Route path="" element={<Navigate to="order" />} />
         </Route>
+        <Route path='/checkout' element={
+          <ProtectedRoute>
+            <Suspense fallback={<Loader />}>
+              <Layout noFooter={true} component={<CheckoutPage />} />
+            </Suspense>
+          </ProtectedRoute>
+        } />
 
         <Route
           path="/product/:name/pid/:id"

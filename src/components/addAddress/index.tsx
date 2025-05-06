@@ -1,22 +1,60 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { GoogleMap, Autocomplete, useLoadScript } from '@react-google-maps/api';
 import { ImSearch } from "react-icons/im";
 import { IoMdClose, IoIosHome } from "react-icons/io";
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addAddress } from '../../store/account';
+import { addAddressApi, updateAddressApi } from '../../utils/Api/AppService/profileApi';
 import { IoClose } from 'react-icons/io5';
+import { showToast } from '../../store/ui';
+
 
 const libraries: ("places" | "drawing" | "geometry" | "visualization")[] = ['places'];
 interface Props {
     onClose: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    data: any;
 }
 
-const AddressPicker: React.FC<Props> = ({ onClose }) => {
+const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
+    console.log('AddressPicker data:', Boolean(data));
+    // Initialize states with data if available
+    const [initialRender, setInitialRender] = useState(true);
+
     const [address, setAddress] = useState('');
     const [locality, setLocality] = useState<{ street_number?: string; route?: string; locality?: string; postal_code?: string }>({});
-    const [center, setCenter] = useState({ lat: -27.4903677, lng: 153.0370532 });
     const [manualAddress, setManualAddress] = useState({ name: '', phone: '', building: '', landmark: '' });
     const dispatch = useAppDispatch();
+
+    const { lat, lng } = useAppSelector((state) => state.persistedReducers.commonState.currentCoordinates);
+    const [center, setCenter] = useState(() => ({
+        lat: lat || -27.424413,
+        lng: lng || 53.054364,
+    }));
+
+    useEffect(() => {
+        if (data && initialRender) {
+            setAddress(data.formattedAddress || '');
+            setLocality({
+                street_number: data.street_no,
+                route: data.street_name,
+                locality: data.locality,
+                postal_code: data.postal_code
+            });
+            setManualAddress({
+                name: data.name,
+                phone: data.phone,
+                building: data.building,
+                landmark: data.landmark || ''
+            });
+            if (data.coordinates) {
+                setCenter({
+                    lat: data.coordinates.lat,
+                    lng: data.coordinates.lng
+                });
+            }
+            setInitialRender(false);
+        }
+    }, [data]);
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_API_KEY || '',
@@ -58,23 +96,45 @@ const AddressPicker: React.FC<Props> = ({ onClose }) => {
         const isFormValid = requiredFields.every(field => manualAddress[field.id as keyof typeof manualAddress]);
         if (isFormValid) {
             const { name, phone, building, landmark } = manualAddress;
-            const data = {
-                addressId: () => Math.floor(Math.random() * (100 - 1 + 1)) + 1,
+            const payload = {
                 name: name,
-                phoneNo: phone,
+                phone: phone,
                 building: building,
                 street_no: locality.street_number || '',
                 street_name: locality.route || '',
-                pincode: locality.postal_code || '',
+                postal_code: locality.postal_code || '',
                 locality: locality.locality || '',
                 landmark: landmark || '',
                 formattedAddress: address,
-                cordinates: center,
+                coordinates: center,
             }
-            dispatch(addAddress(data));
-            setLocality({});
-            setManualAddress({ name: '', phone: '', building: '', landmark: '' });
-            onClose({} as React.MouseEvent<HTMLButtonElement>)
+            if (Boolean(data)) {// UPDATE ADDRESS
+                dispatch(updateAddressApi({ payload, address_id: data.id }))
+                    .unwrap()
+                    .then((res: { address_id: string }) => {
+                        dispatch(showToast({ type: 'success', message: 'Address updated successfully!' }));
+                        setLocality({});
+                        setManualAddress({ name: '', phone: '', building: '', landmark: '' });
+                        onClose({} as React.MouseEvent<HTMLButtonElement>);
+                    })
+                    .catch((err: Error) => {
+                        console.log(err);
+                        dispatch(showToast({ type: 'error', message: 'Failed to update address!' }));
+                    });
+
+            }
+            else { // ADD ADDRESS}
+                addAddressApi(payload).then((res) => {
+                    dispatch(showToast({ type: 'success', message: 'Address added successfuly !' }));
+                    dispatch(addAddress({ ...payload, id: res.address_id }));
+                    setLocality({});
+                    setManualAddress({ name: '', phone: '', building: '', landmark: '' });
+                    onClose({} as React.MouseEvent<HTMLButtonElement>)
+                }).catch((err) => {
+                    console.log(err);
+                    dispatch(showToast({ type: 'error', message: 'Failed to add address!' }));
+                })
+            }
         } else {
             alert('Please fill in all required fields.');
         }
@@ -134,7 +194,6 @@ const AddressPicker: React.FC<Props> = ({ onClose }) => {
             </button>
             {!isLoaded ? (
                 <div className='map-container md:w-1/2'>Loading...</div>
-                // <h1>Loading...</h1>
             ) : (
                 <GoogleMap
                     mapContainerClassName="map-container md:w-1/2"
@@ -216,10 +275,8 @@ const AddressPicker: React.FC<Props> = ({ onClose }) => {
                             </label>
                         </div>
                     ))}
-                    <button type="submit"
-                        className="bg-theme-green-400 text-white font-bold p-2 rounded hover:bg-theme-green-600 w-full"
-                    >
-                        Save Address
+                    <button type="submit" className="bg-theme-green-400 text-white font-bold p-2 rounded hover:bg-theme-green-600 w-full">
+                        {Boolean(data) ? 'Update Address' : 'Save Address'}
                     </button>
                 </form>
 

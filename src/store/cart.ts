@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { CartItem, CartProduct } from '../utils/types';
 import { addToCart, removeFromCart, fetchCart } from '../utils/Api/AppService/cartApi';
+import { getDeliveryCharges } from '../utils/Api/AppService/shippingApi';
+
 
 type InitialState = {
   cartItems: CartItem[];
   cartId: string;
   totalQuantity: number;
-  totalAmount: number;
-  billAmount: number;
   discount: number;
+  distance?: number;
+  deliveryCharge?: number;
   loading: boolean;
   error: unknown | null;
 };
@@ -17,9 +19,9 @@ const initialState: InitialState = {
   cartItems: [],
   cartId: '',
   totalQuantity: 0,
-  totalAmount: 0,
-  billAmount: 0,
   discount: 0,
+  distance: undefined,
+  deliveryCharge: undefined,
   loading: false,
   error: null,
 };
@@ -28,70 +30,6 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    // addItemToGuestCart: (state, action) => {
-    //   const newItem = action.payload as CartProduct;
-    //   const existingItem = state.cartItems.find(
-    //     (item) => item.product.id === newItem.id
-    //   );
-    //   if (existingItem) {
-    //     existingItem.quantity++;
-    //     existingItem.totalPrice = existingItem.billPrice + newItem.mrp;
-    //     existingItem.discount = existingItem.discount + (newItem.mrp - newItem.price);
-    //     existingItem.billPrice = existingItem.billPrice + newItem.price;
-    //   } else {
-    //     state.cartItems.push({
-    //       product: newItem,
-    //       quantity: 1,
-    //       totalPrice: newItem.mrp,
-    //       discount: newItem.mrp - newItem.price,
-    //       billPrice: newItem.price
-    //     });
-    //   }
-    //   state.totalQuantity++;
-    //   state.totalAmount = state.cartItems.reduce(
-    //     (total, item) => total + item.product.mrp * item.quantity,
-    //     0
-    //   );
-    //   state.billAmount = state.cartItems.reduce(
-    //     (total, item) => total + item.product.price * item.quantity,
-    //     0
-    //   );
-    //   state.discount = state.cartItems.reduce(
-    //     (total, item) => total + (item.product.mrp - item.product.price) * item.quantity,
-    //     0
-    //   );
-    // },
-    // removeItemFromGuestCart: (state, action) => {
-    //   const id = action.payload;
-    //   const existingItem = state.cartItems.find(
-    //     (item) => item.product.id === id
-    //   );
-    //   if (existingItem) {
-    //     if (existingItem.quantity === 1) {
-    //       state.cartItems = state.cartItems.filter(
-    //         (item) => item.product.id !== id
-    //       );
-    //     } else {
-    //       existingItem.quantity--;
-    //       existingItem.totalPrice = existingItem.totalPrice - existingItem.product.mrp;
-    //       existingItem.discount = existingItem.discount - (existingItem.product.mrp - existingItem.product.price);
-    //       existingItem.billPrice = existingItem.billPrice - existingItem.product.price;
-    //     }
-    //   }
-    //   state.totalQuantity--;
-    //   state.totalAmount = state.cartItems.reduce(
-    //     (total, item) => total + item.product.mrp * item.quantity,
-    //     0
-    //   );
-    //   state.billAmount = state.cartItems.reduce(
-    //     (total, item) => total + item.product.price * item.quantity,
-    //     0
-    //   );
-    //   state.discount = state.cartItems.reduce(
-    //     (total, item) => total + (item.product.mrp - item.product.price) * item.quantity,
-    //     0
-    //   );
-    // }
   },
   extraReducers: (builder) => {
     builder
@@ -104,6 +42,9 @@ const cartSlice = createSlice({
         state.cartItems = action.payload.data;
         state.totalQuantity = action.payload.data.length;
         state.cartId = action.payload.cart_id;
+        state.deliveryCharge = action.payload.delivery_charges || 0;
+        state.distance = action.payload.distance || 0;
+
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false;
@@ -149,7 +90,11 @@ const cartSlice = createSlice({
       .addCase(removeFromCart.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(getDeliveryCharges.fulfilled, (state, action) => {
+        state.deliveryCharge = action.payload.data.delivery_charges || 0;
+        state.distance = action.payload.data.distance || 0;
+      })
 
   }
 });

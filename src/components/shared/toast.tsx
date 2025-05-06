@@ -23,11 +23,11 @@ const Toast = () => {
         success: 'bg-green-500',
         error: 'bg-red-500',
         warning: 'bg-yellow-500',
-        info: 'bg-blue-500',
+        info: 'bg-blue-400',
     }[type as 'success' | 'error' | 'warning' | 'info'];
 
     return (
-        <div className={`fixed top-5 right-5 z-50 min-w-[250px] px-4 py-2 rounded-md text-white shadow-lg ${bgColor}`}>
+        <div className={`fixed top-5 right-5 z-50 min-w-[300px] px-4 py-2 rounded-md text-white shadow-lg ${bgColor}`}>
             {message}
         </div>
     );

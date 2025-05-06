@@ -5,51 +5,10 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from 'react-icons/fa';
-import { convertTextToURLSlug, getCategoryLink } from '../../utils/helper';
 import AppStoreLogo from '../../assets/images/app-store.webp';
 import PlayStoreLogo from '../../assets/images/play-store.webp';
-import Brands from '../../lib/data/brandsList.json';
-import Categories from '../../lib/data/categories.json';
-
-type BrandLink = {
-  text: string;
-  link: string;
-};
-
-const UsefulLinks: string[] = [
-  'About',
-  'Careers',
-  'Blog',
-  'Press',
-  'Lead',
-  'Value',
-  'Privacy',
-  'Terms',
-  'FAQs',
-  'Security',
-  'Mobile',
-  'Contact',
-  'Partner',
-  'Express',
-  'Local',
-  'Spotlight',
-  'Warehouse',
-  'Deliver',
-];
-
 
 const Footer = () => {
-  const allCategories = Categories.map((cat) => ({
-    id: cat.id,
-    text: cat.title,
-    link: ""//getCategoryLink(cat),
-  }));
-
-  const allBrands: BrandLink[] = Brands.map((brand) => ({
-    text: brand,
-    link: convertTextToURLSlug(brand),
-  }));
-
   return (
     <footer className="bg-gray-100 py-5">
       <div className="_container space-y-6">

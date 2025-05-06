@@ -1,4 +1,4 @@
-import ItemsCarousel from '../shared/ItemsCarousel';
+import { ItemsCarousel } from '../shared';
 import { Link } from 'react-router-dom';
 import { getDealLink } from '../../utils/helper'
 

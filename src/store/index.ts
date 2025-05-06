@@ -13,10 +13,13 @@ import homepageReducer from './homePage';
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"], // only persist the auth slice
+  whitelist: ["auth", "commonState"], // persist auth and commonState slices
 };
 
-const rootReducer = combineReducers({ auth: authReducer });
+const rootReducer = combineReducers({
+  auth: authReducer,
+  commonState: commonReducer,
+});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
@@ -26,7 +29,6 @@ const store = configureStore({
     ui: uiReducer,
     cart: cartReducer,
     modal: modalReducer,
-    commonState: commonReducer,
     account: accountReducer,
     homepage: homepageReducer,
   },

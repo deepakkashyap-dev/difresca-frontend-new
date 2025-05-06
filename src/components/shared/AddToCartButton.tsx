@@ -3,10 +3,9 @@ import { IoAddSharp, IoRemoveSharp } from 'react-icons/io5';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 // import { addItemToGuestCart, removeItemFromGuestCart } from '../../store/cart';
 import { addToCart, removeFromCart } from '../../utils/Api/AppService/cartApi';
-import { CartProduct } from '../../utils/types';
-import { isTokenExpired } from '../../utils/helper';
+// import { CartProduct } from '../../utils/types';
 import { show as showModal } from '../../store/modal';
-
+import { useAuth } from '../../contexts/authContext';
 
 type ButtonProps = {
   product_id: number | string,//CartProduct;
@@ -15,9 +14,8 @@ type ButtonProps = {
 
 const AddToCartButton = ({ product_id, size }: ButtonProps) => {
   const { cartItems } = useAppSelector((state) => state.cart);
-  const { isLoggedIn, refreshToken, accessToken } = useAppSelector((state) => state?.persistedReducers?.auth);
-
   const dispatch = useAppDispatch();
+  const { isAuthenticated } = useAuth();
 
   const reduxItemCount = React.useMemo(() => {
     const item = cartItems.find(
@@ -34,7 +32,7 @@ const AddToCartButton = ({ product_id, size }: ButtonProps) => {
 
   const add = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    if (isLoggedIn && !isTokenExpired(accessToken)) {
+    if (isAuthenticated()) {
       setLocalItemCount(prev => prev + 1);
       dispatch(addToCart({ productId: product_id, quantity: 1 }));
     }
@@ -48,8 +46,9 @@ const AddToCartButton = ({ product_id, size }: ButtonProps) => {
     const item = cartItems.find((item) => item.product_id === Number(product_id));
     if (!item) return;
     setLocalItemCount(prev => prev - 1);
-    dispatch(removeFromCart({ cartItemId: item?.id, quantity: 1 })); 
+    dispatch(removeFromCart({ cartItemId: item?.id, quantity: 1 }));
   };
+
   return localItemCount > 0 ? (
     <div
       className={`flex h-full w-full justify-around rounded-lg uppercase font-bold text-sm bg-theme-green cursor-pointer ${size === 'lg' ? 'text-lg' : 'text-normal'

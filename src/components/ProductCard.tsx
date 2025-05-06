@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import AddToCartButton from './shared/AddToCartButton';
+import { AddToCartButton } from './shared';
 import { CartProduct, ProductItem } from '../utils/types';
 import { getProductLink, getDiscountPercent } from '../utils/helper';
 
@@ -12,6 +12,7 @@ const ProductCard = ({ data, classname }: any) => {
     const link = getProductLink({ title, id: product_id });
     navigate(`/${link}`);
   };
+
   return (
     <div
       className={`_card h-[270px] relative flex cursor-pointer mb-2 mx-auto sm:mx-0 ${classname ? classname : 'w-[180px]'}`}

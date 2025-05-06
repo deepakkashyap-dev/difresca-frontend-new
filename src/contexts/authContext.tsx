@@ -2,6 +2,7 @@ import { createContext, useContext, ReactNode } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { logout as authLogout } from "../store/auth";
 import { sendOtpAPI, verifyOtpAPI } from "../utils/Api/AppService/authApi";
+import { isTokenExpired } from '../utils/helper';
 
 interface LoginData {
     mobileNumber?: string;
@@ -9,7 +10,7 @@ interface LoginData {
 }
 
 interface AuthContextType {
-    isAuthenticated: boolean;
+    isAuthenticated: () => boolean;
     handleSendOtp: (data: LoginData) => Promise<any>;
     handleVerifyOtp: (data: LoginData) => Promise<any>;
     logout: () => void;
@@ -20,9 +21,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const dispatch = useAppDispatch();
 
-    const { isLoggedIn: isAuthenticated } = useAppSelector(
+    const { isLoggedIn, accessToken } = useAppSelector(
         (state) => state.persistedReducers.auth
     );
+
+    const isAuthenticated = () => isLoggedIn && !isTokenExpired(accessToken);
 
     const logout = () => {
         dispatch(authLogout());

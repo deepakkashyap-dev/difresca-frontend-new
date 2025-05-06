@@ -2,7 +2,6 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import store from '../../store';
 import { showLoader, hideLoader } from '../../store/ui';
 import { show as showModal } from '../../store/modal';
-import { isTokenExpired } from '../../utils/helper';
 
 // Extend AxiosRequestConfig to include showLoader flag
 declare module 'axios' {

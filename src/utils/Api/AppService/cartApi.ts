@@ -2,19 +2,24 @@ import axiosInstance from '../config';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { cart } from '../collections';
 
-// Async thunk for fetching cart
-
-// Fetch cart items from API (user cart)
-const fetchCart = createAsyncThunk("cart/fetchCart", async (_, { rejectWithValue }) => {
+const fetchCart = createAsyncThunk("cart/fetchCart", async (_, { getState, rejectWithValue }) => {
     try {
-        const response = await axiosInstance.get(cart['FETCH_CART']);
-        return response.data // This will be stored in Redux state
+        const state = getState() as any; // Access state if needed
+        const { currentCoordinates, defaultAddressId } = state.persistedReducers?.commonState;
+        if (defaultAddressId) { //if address is selected
+            const response = await axiosInstance.get(cart['FETCH_CART'] + `?lat=${currentCoordinates.lat}&lng=${currentCoordinates.lng}`);
+            return response.data; // This will be stored in Redux state
+        }
+        else {
+            const response = await axiosInstance.get(cart['FETCH_CART']);
+            return response.data; // This will be stored in Redux state
+        }
     } catch (error: any) {
         return rejectWithValue(error.response?.data || "Failed to fetch cart");
     }
 });
 
-const addToCart = createAsyncThunk('cart/addToCart', async ({ productId, quantity = 1 }: any, { dispatch, rejectWithValue }) => {
+const addToCart = createAsyncThunk('cart/addToCart', async ({ productId, quantity = 1 }: any, { rejectWithValue }) => {
     try {
         const response = await axiosInstance.post(cart['ADD_TO_CART'], { productId, quantity });
         return response.data;  // This will be stored in Redux state
@@ -30,7 +35,6 @@ const removeFromCart = createAsyncThunk(
         try {
             const response = await axiosInstance.post(cart['REMOVE_FROM_CART'], {
                 cart_item_id: cartItemId,
-                // quantity
             });
             return response.data;
         } catch (error: any) {

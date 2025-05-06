@@ -1,66 +1,80 @@
 import { useAppSelector } from "../../hooks";
-import { MdPinDrop } from "react-icons/md";
-import { BiEdit } from "react-icons/bi";
-import { MdOutlineDelete } from "react-icons/md";
-import { FaPhoneAlt } from "react-icons/fa";
+
 import { show as showModal } from '../../store/modal';
 import { useAppDispatch } from '../../hooks';
+import { Loader, Popup, AddressCard } from '../shared';
+import { useState } from 'react';
+import { deleteAddressApi } from '../../utils/Api/AppService/profileApi';
+import { Address as AddressType } from "../../utils/types";
 
 const AddressList = () => {
     const dispatch = useAppDispatch();
-    const { addressList } = useAppSelector((state) => state.account);
-    console.log(addressList);
-    const showAddressPopup = (): void => {
-        dispatch(showModal({ type: 'addressPicker' }));
+    const { addressList, addressLoading } = useAppSelector((state) => state.account);
+    const [showDeletePopup, setShowDeletePopup] = useState(false);
+    const [selectedAddressId, setSelectedAddressId] = useState<any>(null);
+
+    const showAddressPopup = (address?: AddressType): void => {
+        dispatch(showModal({ type: 'addressPicker', data: address }));
     };
+
+    const handleDeleteClick = (addressId: any) => {
+        setSelectedAddressId(addressId);
+        setShowDeletePopup(true);
+    };
+
+    const handleDeleteConfirm = () => {
+        setShowDeletePopup(false);
+        dispatch(deleteAddressApi({ address_id: selectedAddressId }));
+        setSelectedAddressId(null);
+    };
+
     return (
-        <div>
+        <div className="relative h-fill">
             <div className="pb-4 lg:block">
                 <div className="flex justify-end">
-                    <button onClick={showAddressPopup} className="bg-theme-green text-white px-3 py-2 rounded-md font-bold">Add New Address</button>
+                    <button onClick={() => showAddressPopup()} className="bg-theme-green text-white px-3 py-2 rounded-md font-bold">Add New Address</button>
                 </div>
             </div>
             {
-                addressList.length > 0 ?
-                    <>
-                        {
-                            addressList.map((item) => {
-                                return (
-                                    <div key={item.addressId} className="flex items-center cursor-pointer mb-3 bg-white shadow-sm border rounded-md p-3 hover:shadow-lg transition-shadow duration-300">
-                                        <div className="w-10 h-10 mr-4 flex items-center justify-center border border-gray-300 rounded-md p-1">
-                                            <MdPinDrop className="w-full h-full" />
-                                        </div>
-                                        <div className="w-full flex items-center justify-between ">
-                                            <div>
-                                                <div className="flex text-base font-bold">
-                                                    {item.name}
-                                                    <span className="ml-5 text-gray-400 flex items-center">
-                                                        <FaPhoneAlt className="w-7" /> {item.phoneNo}
-                                                    </span>
-                                                </div>
-                                                <div className="text-gray-400 text-sm font-bold">{item.building}</div>
-                                                <span className="text-gray-400 text-sm font-bold">
-                                                    {item.formattedAddress}
-                                                </span>
-                                            </div>
-                                            <div className="ml-5 flex items-end justify-end">
-                                                <div className="mr-5 cursor-pointer w-5 h-5 hover:text-blue-500">
-                                                    <BiEdit className="w-full h-full" />
-                                                </div>
-                                                <div className="mr-5 cursor-pointer w-5 h-5 hover:text-red-500">
-                                                    <MdOutlineDelete className="w-full h-full" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </>
+                addressLoading ?
+                    <Loader className='' />
                     :
-                    <div>No addresses</div>
-
+                    (
+                        addressList.length > 0 ?
+                            <>
+                                {
+                                    addressList.map((item) =>
+                                        <AddressCard
+                                            address={item}
+                                            showAddressPopup={showAddressPopup}
+                                            handleDeleteClick={handleDeleteClick}
+                                            key={String(item.id)}
+                                        />
+                                    )
+                                }
+                            </>
+                            :
+                            <div className="flex flex-col items-center justify-center text-center py-6">
+                                <img src="/no_address.png" alt="No Address" className="h-64 w-64 mb-4" />
+                            </div>
+                    )
             }
+
+            {showDeletePopup && (
+                <Popup
+                    isOpen={showDeletePopup}
+                    onClose={() => setShowDeletePopup(false)}
+                    title="Delete Address"
+                    secondaryButtonText="Cancel"
+                    primaryButtonText="Delete"
+                    onPrimaryClick={handleDeleteConfirm}
+                    onSecondaryClick={() => setShowDeletePopup(false)}
+                >
+                    <div className="p-4">
+                        <p className="mb-4">Are you sure you want to delete this address?</p>
+                    </div>
+                </Popup>
+            )}
         </div>
     )
 }

@@ -250,17 +250,18 @@ export type CartItem = {
 };
 
 export type Address = {
+  id(id: any): void
   addressId: string;
   name: string;
-  phoneNo: string;
+  phone: string;
   building: string;
   street_no: string;
   street_name: string;
-  pincode: string;
+  postal_code: string;
   locality: string;
   landmark?: string;
   formattedAddress?: string;
-  cordinates?: {
+  coordinates?: {
     lat: number;
     lng: number;
   };

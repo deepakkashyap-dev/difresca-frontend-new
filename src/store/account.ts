@@ -1,24 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { CartItem, Address } from '../utils/types';
-
-const address = [
-    {
-        addressId: '1',
-        name: 'John Doe',
-        phoneNo: '1234567890',
-        building: 'blitz apartment',
-        street_no: '123',
-        street_name: 'Elm St',
-        pincode: '12345',
-        locality: 'Downtown',
-        landmark: 'Near Central Park',
-        formattedAddress: '123, Elm St, blitz apartment, Downtown, Gotham - 12345',
-        cordinates: {
-            lat: 12.345,
-            lng: 98.765,
-        },
-    },
-]
+import { getAddressListApi, deleteAddressApi, updateAddressApi } from '../utils/Api/AppService/profileApi';
 
 const orderList = [
     {
@@ -52,7 +34,6 @@ const orderList = [
     }
 ]
 
-
 type OrderList = {
     id: string;
     cart_id: string;
@@ -74,16 +55,44 @@ type OrderList = {
 type InitialState = {
     orderList: OrderList[];
     addressList: Address[];
+    addressLoading: boolean;
 };
 
 const initialState: InitialState = {
     orderList: [...orderList],
-    addressList: [...address],
+    addressList: [],
+    addressLoading: false,
 };
 
 const accountSlice = createSlice({
     name: 'account',
     initialState,
+    extraReducers: (builder) => {
+        builder
+            // Fetch cart Data
+            .addCase(getAddressListApi.pending, (state) => {
+                state.addressLoading = true;
+            })
+            .addCase(getAddressListApi.fulfilled, (state, action) => {
+                state.addressList = action.payload.address_list;
+                state.addressLoading = false;
+            })
+            .addCase(deleteAddressApi.fulfilled, (state, action) => {
+                const { address_id } = action.payload
+                const existingItemIndex = state.addressList.findIndex(item => item.id === address_id);
+                if (existingItemIndex !== -1) {
+                    state.addressList.splice(existingItemIndex, 1);
+                }
+            })
+            .addCase(updateAddressApi.fulfilled, (state, action) => {
+                console.log("updateAddressApi", action.payload)
+                const { address_id, data } = action.payload
+                const existingItemIndex = state.addressList.findIndex(item => item.id === address_id);
+                if (existingItemIndex !== -1) {
+                    state.addressList[existingItemIndex] = data;
+                }
+            });
+    },
     reducers: {
         // addOrders: (state, action) => {
         //     const newOrder = action.payload as Order;

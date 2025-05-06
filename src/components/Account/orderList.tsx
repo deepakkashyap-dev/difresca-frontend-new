@@ -67,7 +67,7 @@ const OrderList = () => {
                       </div>
                     </div>
                     {/* <div className="text-lg font-semibold text-gray-800">{item.name}</div>
-                    <span className="text-center text-gray-400 mb-2">{item.addressLineOne}, {item.addressLineTwo}, {item.locality}, {item.city}, PIN {item.pincode}, Mob:-{item.phoneNo}</span> */}
+                    <span className="text-center text-gray-400 mb-2">{item.addressLineOne}, {item.addressLineTwo}, {item.locality}, {item.city}, PIN {item.postal_code}, Mob:-{item.phone}</span> */}
                   </div>
                 )
               })

@@ -22,16 +22,19 @@ const cart = {
   FETCH_CART: "/cart/fetch-cart",
 
   // DELETE_CART: "/cart/delete-cart",
-
-  // UPDATE_CART: "/cart/update-cart",
-  // CHECKOUT: "/cart/checkout",
-  // APPLY_COUPON: "/cart/apply-coupon",
-  // REMOVE_COUPON: "/cart/remove-coupon",
-  // GET_CART_TOTAL: "/cart/get-cart-total",
-  // GET_CART_TOTAL_AFTER_COUPON: "/cart/get-cart-total-after-coupon",
-  // GET_CART_TOTAL_AFTER_SHIPPING: "/cart/get-cart-total-after-shipping",
-  // GET_CART_TOTAL_AFTER_TAX: "/cart/get-cart-total-after-tax",
-  // GET_CART_TOTAL_AFTER_DISCOUNT: "/cart/get-cart-total-after-discount"
 }
 
-export { auth, dashboard, product, cart };
+const shipping = {
+  GET_LOCATION_ADDRESS: "/shipping/location-info",
+  GET_LOCATION_SUGGESTIONS: "/shipping/location_autosuggest",
+  GET_LOCATION_COORDINATED: "/shipping/location_coordinates",
+  GET_DELIVERY_CHARGES: "/shipping/delivery-charge",
+}
+
+const profile = {
+  // GET_PROFILE: "/profile/get-profile",
+  // UPDATE_PROFILE: "/profile/update-profile",
+  GET_ADDRESS_LIST: "/profile/get-address-list",
+  ADDRESS: "/accounts/address/",
+}
+export { auth, dashboard, product, cart, shipping, profile };

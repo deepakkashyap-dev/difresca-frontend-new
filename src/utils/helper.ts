@@ -1,7 +1,4 @@
-import ChemistProducts from '../lib/data/products/chemistProducts.json';
-import DairyProducts from '../lib/data/products/dairyProducts.json';
-import SnacksProducts from '../lib/data/products/snacksProducts.json';
-import { CartProduct, GetCategoryLinkType, GetDealLinkType, GetProductLinkType, ProductItem } from "./types";
+import { GetCategoryLinkType, GetDealLinkType, GetProductLinkType } from "./types";
 import { jwtDecode } from 'jwt-decode';
 
 const convertTextToURLSlug = (text: string): string => {
@@ -48,18 +45,6 @@ const shuffleItems = (unshuffled: any[] | undefined): any[] => {
   return shuffled;
 }
 
-const getProducts = () => {
-  const products = [...ChemistProducts, ...DairyProducts, ...SnacksProducts];
-  return products;
-}
-
-const getProductById = (id: string | undefined) => {
-  if (id) {
-    const product = getProducts().filter((item) => item.id === id)[0]
-    return product || null
-  }
-}
-
 const getDiscountPercent = (originalPrice: number, discountedPrice: number) => {
   // Check if the original price is greater than zero to avoid division by zero
   if (originalPrice <= 0) {
@@ -77,4 +62,4 @@ const isTokenExpired = (token: string): boolean => {
   return Date.now() >= exp * 1000;
 };
 
-export { convertTextToURLSlug, getCategoryLink, getDealLink, getProductLink, shuffleItems, getProductById, getDiscountPercent, isTokenExpired };
+export { convertTextToURLSlug, getCategoryLink, getDealLink, getProductLink, shuffleItems, getDiscountPercent, isTokenExpired };

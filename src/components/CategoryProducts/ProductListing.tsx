@@ -1,8 +1,7 @@
-import { Key, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Key} from "react";
 import { getProductsBySubCategoryApi } from "../../utils/Api/AppService/productApi";
 import ProductCard from '../../components/ProductCard';
-import Loader from '../../components/shared/Loader';
+import { Loader } from '../../components/shared';
 
 
 const ProductListing = ({ is_left_enable = false, products, loading }: any) => {

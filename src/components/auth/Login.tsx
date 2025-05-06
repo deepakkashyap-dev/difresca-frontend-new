@@ -17,7 +17,7 @@ const LoginPage = ({ onClose }: Props) => {
     const [timer, setTimer] = useState(8); // Set timer for 8 seconds
     const [otp, setOtp] = useState(new Array(4).fill(''));
     const [isOtpSent, setIsOtpSent] = useState(false);
-    const { handleSendOtp, handleVerifyOtp, isAuthenticated } = useAuth();
+    const { handleSendOtp, handleVerifyOtp } = useAuth();
 
     const isOtpComplete = otp.every(value => value.trim() !== '');
 

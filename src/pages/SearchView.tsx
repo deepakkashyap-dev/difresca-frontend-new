@@ -10,7 +10,7 @@ import { searchProductApi } from "../utils/Api/AppService/productApi";
 const SearchView = () => {
     const [product, setProduct] = useState<ProductItem[]>([]);
     const [isLoading, setLoading] = useState(false);
-    const { searchVal } = useAppSelector((state) => state.commonState);
+    const { searchVal } = useAppSelector((state) => state.persistedReducers.commonState);
     const dispatch = useAppDispatch();
 
     const fetchResults = async (searchVal: string) => {
