@@ -156,7 +156,7 @@ const LoginPage = ({ onClose }: Props) => {
                     <>
                         <div className='flex flex-col items-center'>
                             <p>We have sent a verification code on your mobile</p>
-                            <h3 className='font-cursive'>+91-{mobileNumber}</h3>
+                            <h3 className='font-cursive'>+61-{mobileNumber}</h3>
                         </div>
                         <form onSubmit={handleOtpSubmit} className='login-form mb-6'>
                             <div className="otp-input-container mb-4">

@@ -206,7 +206,7 @@ html {
 
 .login-phone::after {
   color: #333;
-  content: '+91';
+  content: '+61';
   font-weight: 600;
   font-size: 14px;
   left: 15px;
