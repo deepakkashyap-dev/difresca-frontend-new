@@ -1,5 +1,4 @@
 import { useAppSelector } from "../../hooks";
-
 import { show as showModal } from '../../store/modal';
 import { useAppDispatch } from '../../hooks';
 import { Loader, Popup, AddressCard } from '../shared';

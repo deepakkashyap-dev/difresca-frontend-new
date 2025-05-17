@@ -4,16 +4,18 @@ import { cart } from '../collections';
 
 const fetchCart = createAsyncThunk("cart/fetchCart", async (_, { getState, rejectWithValue }) => {
     try {
-        const state = getState() as any; // Access state if needed
-        const { currentCoordinates, defaultAddressId } = state.persistedReducers?.commonState;
-        if (defaultAddressId) { //if address is selected
-            const response = await axiosInstance.get(cart['FETCH_CART'] + `?lat=${currentCoordinates.lat}&lng=${currentCoordinates.lng}`);
-            return response.data; // This will be stored in Redux state
-        }
-        else {
-            const response = await axiosInstance.get(cart['FETCH_CART']);
-            return response.data; // This will be stored in Redux state
-        }
+        // const state = getState() as any; // Access state if needed
+        // const { currentCoordinates, defaultAddressId } = state.persistedReducers?.commonState;
+        // if (defaultAddressId) { //if address is selected
+        //     const response = await axiosInstance.get(cart['FETCH_CART'] + `?lat=${currentCoordinates.lat}&lng=${currentCoordinates.lng}`);
+        //     return response.data; // This will be stored in Redux state
+        // }
+        // else {
+        //     const response = await axiosInstance.get(cart['FETCH_CART']);
+        //     return response.data; // This will be stored in Redux state
+        // }
+        const response = await axiosInstance.get(cart['FETCH_CART']);
+        return response.data; // This will be stored in Redux state
     } catch (error: any) {
         return rejectWithValue(error.response?.data || "Failed to fetch cart");
     }

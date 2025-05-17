@@ -96,8 +96,8 @@ const cartSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(getDeliveryCharges.fulfilled, (state, action) => {
-        state.deliveryCharge = action.payload.data.delivery_charges || 0;
-        state.distance = action.payload.data.distance || 0;
+        state.deliveryCharge = action.payload.delivery_charges || 0;
+        state.distance = action.payload.distance || 0;
       })
 
   }

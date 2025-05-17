@@ -33,13 +33,11 @@ const getAddressCordinatedApi = async (place_id: string) => {
 const getDeliveryCharges = createAsyncThunk(
     "cart/deliveryCharges",
     async (
-        { lat, lng }: { lat: number; lng: number },
+        { address_id }: { address_id: any },
         { rejectWithValue }
     ) => {
         try {
-            const response = await axiosInstance.get(
-                `${shipping.GET_DELIVERY_CHARGES}?lat=${lat}&lng=${lng}`
-            );
+            const response = await axiosInstance.post(shipping.UPDATE_DEFAULT_ADDRESS, { address_id }, { loader: true });
             return response.data; // This will be stored in Redux state
         } catch (error: any) {
             return rejectWithValue(

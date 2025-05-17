@@ -28,7 +28,16 @@ const shipping = {
   GET_LOCATION_ADDRESS: "/shipping/location-info",
   GET_LOCATION_SUGGESTIONS: "/shipping/location_autosuggest",
   GET_LOCATION_COORDINATED: "/shipping/location_coordinates",
-  GET_DELIVERY_CHARGES: "/shipping/delivery-charge",
+  GET_DELIVERY_CHARGES: "/shipping/delivery-charge", // not using this api,using updateDefaultAdress api
+  UPDATE_DEFAULT_ADDRESS: "/shipping/update-default-address",
+}
+
+const checkout = {
+  CHECKOUT_ORDER: "/checkout/checkout-order",
+  CHECKOUT_SESSION: "/checkout/create-session/", // post method
+  CREATE_PAYMENT_INTENT: "/checkout/create-payment-intent/",// post method
+  // GET_CHECKOUT_ADDRESS: "/checkout/get-checkout-address",
+  // GET_CHECKOUT_PAYMENT: "/checkout/get-checkout-payment",
 }
 
 const profile = {
@@ -37,4 +46,4 @@ const profile = {
   GET_ADDRESS_LIST: "/profile/get-address-list",
   ADDRESS: "/accounts/address/",
 }
-export { auth, dashboard, product, cart, shipping, profile };
+export { auth, dashboard, product, cart, shipping, profile, checkout };

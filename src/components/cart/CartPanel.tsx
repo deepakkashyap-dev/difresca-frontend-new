@@ -14,12 +14,12 @@ import { getDeliveryCharges } from '../../utils/Api/AppService/shippingApi';
 
 const CartPanelItem = (props: CartItem) => {
   if (!props.product) return null;
-  const { image, title, unit, unit_type, discounted_rate, unit_price } = props.product;
+  const { thumbnail, title, unit, unit_type, discounted_rate, unit_price } = props.product;
   return (
     <div className="flex p-4 gap-4 border-t _border-muted items-center">
       <div>
         <div className="h-[60px] w-[60px] border rounded-[10px] overflow-hidden">
-          <img src={image} alt={title} className="h-full w-full" />
+          <img src={thumbnail} alt={title} className="h-full w-full" />
         </div>
       </div>
       <div className="text-left flex flex-col flex-1">
@@ -87,12 +87,11 @@ const CartPanel = () => {
     const lng = address?.coordinates?.lng || 0
     setShowSelectAddress(false);
     dispatch(updateCurrentLocation({
-      lat,
-      lng,
+      lat, lng,
       address: address.formattedAddress,
       defaultAddressId: address.id,
     }));
-    dispatch(getDeliveryCharges({ lat, lng }));
+    dispatch(getDeliveryCharges({ 'address_id': address.id }));
     setLoading(false);
   };
 

@@ -183,6 +183,18 @@ const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
         }
     }, [mapRef, center]);
 
+    const options = {
+        bounds: {
+            north: -27.3,   // roughly Brisbane bounds
+            south: -27.7,
+            east: 153.2,
+            west: 152.9,
+        },
+        strictBounds: true,
+        componentRestrictions: { country: 'au' }, // Australia only
+        fields: ['formatted_address', 'geometry', 'name'],
+    };
+
     return (
         <div className='flex md:h-[600px]'>
             <button
@@ -198,7 +210,7 @@ const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
                 <GoogleMap
                     mapContainerClassName="map-container md:w-1/2"
                     center={center}
-                    zoom={20}
+                    zoom={10}
                     onLoad={(map) => { mapRef.current = map; }}
                     onIdle={handleMapIdle}
                     options={{
@@ -206,15 +218,15 @@ const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
                         fullscreenControl: false,
                         mapTypeControl: false,
                         streetViewControl: false,
-                        restriction: {
-                            latLngBounds: {
-                                north: -26.5,  // approximate northern limit of Brisbane
-                                south: -27.7,  // approximate southern limit of Brisbane
-                                west: 152.5,   // approximate western limit of Brisbane
-                                east: 153.3    // approximate eastern limit of Brisbane
-                            },
-                            strictBounds: true, // set true to enforce bounds strictly
-                        }
+                        // restriction: {
+                        //     latLngBounds: {
+                        //         north: -26.5,  // approximate northern limit of Brisbane
+                        //         south: -27.7,  // approximate southern limit of Brisbane
+                        //         west: 152.5,   // approximate western limit of Brisbane
+                        //         east: 153.3    // approximate eastern limit of Brisbane
+                        //     },
+                        //     strictBounds: true, // set true to enforce bounds strictly
+                        // }
                     }}
 
 

@@ -229,6 +229,7 @@ export type CartProduct = {
   id: string;
   title: string;
   subTitle: string;
+  thumbnail?: string;
   image?: string;
   price: number;
   mrp: number;
@@ -266,3 +267,19 @@ export type Address = {
     lng: number;
   };
 };
+
+export type CheckoutSessionType = {
+  checkout_session_id: any;
+  clientSecret: string | undefined;
+  error?: string;
+  success?: boolean;
+  message?: string;
+  items?: Array<{
+    product_name: string;
+    price: number | string;
+    quantity: number;
+  }>;
+  total?: number | string;
+  handling?: number | string;
+  delivery?: number | string;
+}
