@@ -36,6 +36,7 @@ const checkout = {
   CHECKOUT_ORDER: "/checkout/checkout-order",
   CHECKOUT_SESSION: "/checkout/create-session/", // post method
   CREATE_PAYMENT_INTENT: "/checkout/create-payment-intent/",// post method
+  PAYMENT_WEB_HOOK: "/checkout/payment-webhook/", // post method
   // GET_CHECKOUT_ADDRESS: "/checkout/get-checkout-address",
   // GET_CHECKOUT_PAYMENT: "/checkout/get-checkout-payment",
 }

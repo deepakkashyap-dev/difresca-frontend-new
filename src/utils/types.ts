@@ -280,6 +280,6 @@ export type CheckoutSessionType = {
     quantity: number;
   }>;
   total?: number | string;
-  handling?: number | string;
-  delivery?: number | string;
+  handling_charge?: number | string;
+  delivery_charge?: number | string;
 }

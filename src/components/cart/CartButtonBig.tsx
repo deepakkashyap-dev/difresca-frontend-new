@@ -19,9 +19,9 @@ const CartButtonBig = () => {
             {totalQuantity} {totalQuantity > 1 ? 'items' : 'item'}
           </span>
           <span className="tracking-tight text-sm">
-            ₹{billAmount}{' '}
+            ${billAmount}{' '}
             <span className="text-xs font-normal">
-              <del className="opacity-80">₹{totalAmount}</del> plus taxes
+              <del className="opacity-80">${totalAmount}</del> plus taxes
             </span>{' '}
           </span>
         </div>

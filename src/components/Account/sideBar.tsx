@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { IoBagHandleSharp, IoLocationSharp, IoPersonCircleOutline } from "react-icons/io5";
 import { GiExitDoor } from "react-icons/gi";
+import { useAppSelector } from '../../hooks';
 
 const menuItems = [
     { name: 'My Order', icon: <IoBagHandleSharp className="w-5 h-5" />, link: 'order' },
@@ -11,11 +12,11 @@ const menuItems = [
 
 const SideBar: React.FC = () => {
     const location = useLocation();
-
+    const { mobileNumber } = useAppSelector((state) => state.persistedReducers.auth);
     return (
         <div className="px-4 lg:px-0 h-full flex flex-col">
             <header className="flex items-center justify-between p-4">
-                <h3 className='p-4 font-bold text-lg leading-tight'> Deepak</h3>
+                <h3 className='p-4 font-bold text-lg leading-tight'> +61 {mobileNumber.slice(1, 10)}</h3>
             </header>
             <nav className="flex flex-col justify-between flex-grow">
                 <ul>

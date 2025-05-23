@@ -216,13 +216,13 @@ const CartPanel = () => {
                         <div className="px-4 text-xs space-y-2 py-2">
                           <div className="flex items-start justify-between _text-default">
                             <span>Items Total</span>
-                            <span>₹{item_total}</span>
+                            <span>${item_total}</span>
                           </div>
                           <div className="flex items-start justify-between _text-default">
                             <span>Product Discount</span>
-                            <span>- ₹{discount}</span>
+                            <span>${discount}</span>
                           </div>
-                          {distance !== 0 && deliveryCharge !== 0 &&
+                          {distance !== 0 && distance !== undefined &&
                             <>
                               <div className="flex items-start justify-between _text-default">
                                 <span>Total distance</span>
@@ -233,18 +233,18 @@ const CartPanel = () => {
                               <div className="flex items-start justify-between _text-default">
                                 <span>Delivery Charge</span>
                                 <span>
-                                  ₹{deliveryCharge}
+                                  ${deliveryCharge}
                                 </span>
                               </div>
                             </>
                           }
                           {/* <div className="flex items-start justify-between _text-default">
                       <span>Tax (GST)</span>
-                      <span>₹{(billAmount * 0.05).toFixed(2)}</span>
+                      <span>${(billAmount * 0.05).toFixed(2)}</span>
                     </div> */}
                           <div className="flex items-start justify-between text-[14px] text-black font-bold py-2">
                             <span>Grand Total</span>
-                            <span>₹{grand_total}</span>
+                            <span>${grand_total}</span>
                           </div>
                         </div>
                         <div className="px-4 py-2 border-t-2 bg-neutral-100 text-xs _text-muted border-b _border-muted">
@@ -282,7 +282,7 @@ const CartPanel = () => {
                         <div className="font-bold">{totalQuantity} Items</div>
                         <div className="font-bold">&nbsp; &middot; &nbsp;</div>
                         <div>
-                          <span className="font-extrabold">₹{grand_total}</span>
+                          <span className="font-extrabold">${grand_total}</span>
                         </div>
                         <div className="ml-auto flex items-center font-bold">
                           Proceed <FiChevronRight size={18} className="ml-2" />

@@ -38,13 +38,11 @@ const VarientItem = ({
   return (
     <div
       onClick={() => onSelect()}
-      className={`rounded-lg max-w-[150px] border overflow-hidden leading-none ${
-        data.selected ? 'border-[#b1dc9c]' : '_border-muted'
-      } ${
-        data.out_of_stock
+      className={`rounded-lg max-w-[150px] border overflow-hidden leading-none ${data.selected ? 'border-[#b1dc9c]' : '_border-muted'
+        } ${data.out_of_stock
           ? 'bg-gray-50 pointer-events-none'
           : 'bg-white cursor-pointer'
-      }`}
+        }`}
     >
       <div className="py-2 px-3 flex items-center">
         <div className="w-8 pl-1">
@@ -56,8 +54,8 @@ const VarientItem = ({
             <span className="text-[10px] text-red-500">Out of stock</span>
           ) : (
             <span className="text-xs">
-              ₹{data.price}
-              <del className="ml-1 opacity-80">₹{data.mrp}</del>
+              ${data.price}
+              <del className="ml-1 opacity-80">${data.mrp}</del>
             </span>
           )}
         </div>

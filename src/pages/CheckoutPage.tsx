@@ -5,6 +5,10 @@ import CheckoutForm from '../components/CheckOut/checkOutFOrm';
 import { getCheckoutSessionApi, createPaymentIntentApi } from '../utils/Api/AppService/checkoutApi';
 import { CheckoutSessionType } from '../utils/types';
 import { Loader } from '../components/shared'
+import { showToast } from '../store/ui';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { useNavigate } from 'react-router-dom';
+
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '');
 
 
@@ -12,43 +16,53 @@ const CheckoutPage = () => {
     const [checkoutSession, setCheckoutSession] = useState<CheckoutSessionType | null>(null);
     const [clientSecret, setClientSecret] = useState('');
     const [loading, setLoading] = useState(true);
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const createCheckoutSession = async () => {
-            getCheckoutSessionApi()
-                .then((data: CheckoutSessionType) => {
-                    console.log(data, "data from checkout session")
-                    setCheckoutSession(data);
-                    const totalPay = Number(data.total || 0) + Number(data.handling || 0) + Number(data.delivery || 0)
-                    if (data.checkout_session_id) {
-                        createPaymentIntentApi({ checkout_session_id: data.checkout_session_id, amount: totalPay })
-                            .then((data: any) => {
-                                console.log(data, "data from payment intent")
-                                setClientSecret(data.clientSecret);
-                            })
-                            .catch((error: any) => {
-                                console.error('Error creating payment intent:', error);
-                            });
-                    }
-                    setLoading(false);
-                    // throw new Error(data.error);
-                })
-                .catch((error: any) => {
-                    console.error('Error fetching checkout session:', error);
-                    setLoading(false);
+            try {
+                const data: CheckoutSessionType = await getCheckoutSessionApi();
+                setCheckoutSession(data);
 
-                });
+                if (data.checkout_session_id && data.total) {
+                    const amount = Math.round(Number(data.total));
+                    const paymentData = await createPaymentIntentApi({
+                        checkout_session_id: data.checkout_session_id,
+                        amount: amount
+                    });
+                    setClientSecret(paymentData.clientSecret);
+                }
+            } catch (error) {
+                if (error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'error' in error.data) {
+                    dispatch(showToast({ type: 'error', message: error.data.error }));
+                } else {
+                    console.error('Error in checkout process:', error);
+                }
+                navigate('/');
+            } finally {
+                setLoading(false);
+            }
         };
         createCheckoutSession();
     }, []);
 
-    const appearance = { theme: 'stripe' as const };
-    const options = { clientSecret, appearance };
+    const appearance = {
+        theme: 'stripe' as const,
+        variables: {
+            colorPrimary: '#10B981',
+        }
+    };
 
-    if (loading) return <Loader className='' />
-    if (!checkoutSession) return <div>Checkout session not found</div>;
-    if (checkoutSession.items?.length === 0) return <div>No items in the cart</div>;
-    console.log(checkoutSession, "checkout session", checkoutSession.items)
+    const options = {
+        clientSecret,
+        appearance
+    };
+
+    if (loading) return <Loader className='flex justify-center items-center min-h-screen' />;
+    if (!checkoutSession) return <div className="text-center p-4">Checkout session not found</div>;
+    if (!checkoutSession.items?.length) return <div className="text-center p-4">No items in the cart</div>;
+
     return (
         <div className="min-h-screen bg-green-50 p-4">
             <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -57,7 +71,7 @@ const CheckoutPage = () => {
                     <h2 className="text-2xl font-bold mb-6 text-green-700">Payment Information</h2>
                     {clientSecret && (
                         <Elements options={options} stripe={stripePromise}>
-                            <CheckoutForm />
+                            <CheckoutForm amount={Number(checkoutSession.total)} />
                         </Elements>
                     )}
 
@@ -93,21 +107,6 @@ const CheckoutPage = () => {
                         <div className="flex justify-between font-bold text-lg mb-4">
                             <span>Total</span>
                             <span>${checkoutSession.total}</span>
-                        </div>
-
-                        {/* Payment Methods Accepted */}
-                        <div className="border-t pt-4">
-                            <p className="text-sm text-gray-600 mb-2">We Accept</p>
-                            <div className="grid grid-cols-4 gap-2">
-                                <img src="/visa.webp" alt="Visa" className="h-6 object-contain" />
-                                <img src="/mastercard.webp" alt="Mastercard" className="h-6 object-contain" />
-                                <img src="/rupay.webp" alt="RuPay" className="h-6 object-contain" />
-                                <img src="/amex.webp" alt="American Express" className="h-6 object-contain" />
-                                <img src="/bhim.webp" alt="BHIM" className="h-6 object-contain" />
-                                <img src="/paytm.webp" alt="Paytm" className="h-6 object-contain" />
-                                <img src="/phone.webp" alt="PhonePe" className="h-6 object-contain" />
-                                <img src="/mobikwik.webp" alt="MobiKwik" className="h-6 object-contain" />
-                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,53 +1,66 @@
-import React, { useState, useRef } from 'react';
-import { CardElement, useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
-import { StripeCardElement } from '@stripe/stripe-js';
-import { IoCardOutline } from 'react-icons/io5';
-import { FaIdeal, FaCcVisa, FaCcMastercard, FaCcAmex } from 'react-icons/fa';
-import { AiOutlineAlipay, AiFillBank } from 'react-icons/ai';
-import { SiPaytm, SiGooglepay, SiPhonepe } from 'react-icons/si';
+import React, { useState } from 'react';
+import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
+import { Loader } from './../shared';
 
+interface CheckoutFormProps {
+    amount: number;
+}
 
-
-const CheckoutForm = () => {
+const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
 
-
-    const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!stripe || !elements) return;
+        // Ensure elements and stripe are loaded
+        if (!stripe || !elements) {
+            setError('Payment form is not ready. Please try again in a moment.');
+            return;
+        }
 
-        const { error, paymentIntent } = await stripe.confirmPayment({
-            elements,
-            confirmParams: {
-                return_url: `${window.location.origin}/payment-success`, // Optional
-            },
-            redirect: 'if_required', // Optional for same-page
-        });
+        setLoading(true);
+        setError(null);
 
-        if (error) {
-            console.error(error.message);
-        } else if (paymentIntent.status === 'succeeded') {
-            console.log('Payment succeeded!');
+        try {
+            const { error: submitError, paymentIntent } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    return_url: `${window.location.origin}/payment-success`,
+                },
+                redirect: 'if_required',
+            });
+            console.log('Payment response:', { submitError, paymentIntent });
+            if (submitError) {
+                setError(submitError.message || 'Payment failed');
+            } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+
+                console.log('Payment succeeded!');
+            }
+        } catch (err) {
+            console.log("err", err)
+            setError('An unexpected error occurred');
+        } finally {
+            setLoading(false);
         }
     };
 
+    if (loading) return <Loader className='flex justify-center items-center min-h-screen' />;
     return (
-        <form onSubmit={handleSubmit}>
-            <PaymentElement
-                options={{
-                    layout: 'tabs',
-                    paymentMethodOrder: ['card', 'au_becs_debit', 'apple_pay', 'google_pay'],
-                }} />
+        <form onSubmit={handleSubmit} className="space-y-4">
+            <PaymentElement />
+
+            {error && (
+                <div className="text-red-600 text-sm">{error}</div>
+            )}
+
             <button
                 type="submit"
-                disabled={!stripe}
-                className="btn btn-primary mt-4"
+                disabled={!stripe || loading}
+                className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
-                Pay Now
+                {loading ? 'Processing...' : `Pay $${amount} Now`}
             </button>
         </form>
     );

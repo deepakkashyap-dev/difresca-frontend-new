@@ -184,15 +184,23 @@ const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
     }, [mapRef, center]);
 
     const options = {
-        bounds: {
-            north: -27.3,   // roughly Brisbane bounds
-            south: -27.7,
-            east: 153.2,
-            west: 152.9,
-        },
+        // gestureHandling: 'greedy',
+        fullscreenControl: false,
+        mapTypeControl: false,
+        streetViewControl: false,
+        zoomControl: true,
         strictBounds: true,
         componentRestrictions: { country: 'au' }, // Australia only
         fields: ['formatted_address', 'geometry', 'name'],
+        restriction: {
+            latLngBounds: {
+                north: -26.5,  // approximate northern limit of Brisbane
+                south: -27.7,  // approximate southern limit of Brisbane
+                west: 152.5,   // approximate western limit of Brisbane
+                east: 153.3    // approximate eastern limit of Brisbane
+            },
+            strictBounds: true, // set true to enforce bounds strictly
+        }
     };
 
     return (
@@ -210,26 +218,10 @@ const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
                 <GoogleMap
                     mapContainerClassName="map-container md:w-1/2"
                     center={center}
-                    zoom={10}
+                    zoom={30}
                     onLoad={(map) => { mapRef.current = map; }}
                     onIdle={handleMapIdle}
-                    options={{
-                        gestureHandling: 'greedy',
-                        fullscreenControl: false,
-                        mapTypeControl: false,
-                        streetViewControl: false,
-                        // restriction: {
-                        //     latLngBounds: {
-                        //         north: -26.5,  // approximate northern limit of Brisbane
-                        //         south: -27.7,  // approximate southern limit of Brisbane
-                        //         west: 152.5,   // approximate western limit of Brisbane
-                        //         east: 153.3    // approximate eastern limit of Brisbane
-                        //     },
-                        //     strictBounds: true, // set true to enforce bounds strictly
-                        // }
-                    }}
-
-
+                    options={options}
                 >
                     <div className="relative w-full p-2 pt-3">
                         <Autocomplete onLoad={(autocomplete) => (autocompleteRef.current = autocomplete)} onPlaceChanged={handlePlaceChanged}>
@@ -275,7 +267,8 @@ const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
                         }}
                     />
                 </GoogleMap>
-            )}
+            )
+            }
             <div className="md:w-1/2 p-4">
                 <h2 className="text-lg font-bold mb-4 text-center">Enter Full Address</h2>
                 <form onSubmit={handleSubmitForm}>
@@ -304,7 +297,7 @@ const AddressPicker: React.FC<Props> = ({ onClose, data = null }) => {
                 </form>
 
             </div>
-        </div>
+        </div >
     );
 };
 

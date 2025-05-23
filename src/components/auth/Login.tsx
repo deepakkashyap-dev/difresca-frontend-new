@@ -31,14 +31,19 @@ const LoginPage = ({ onClose }: Props) => {
     const handleMobileSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await handleSendOtp({ mobileNumber });
+            const otpRes = await handleSendOtp({ mobileNumber });
+            console.log(otpRes, "otpRes");
             setIsOtpSent(true);
             setStep(2); // Move to OTP step
             setTimer(59)
         } catch (err: any) {
+            console.log(err.response);
             if (err.status === 429) {
                 dispatch(showToast({ type: 'error', message: 'Too many requests. Please try again later.' }));
-            };
+            }
+            if (err.status === 500) {
+                dispatch(showToast({ type: 'error', message: err.response.data.error }));
+            }
         }
     };
 
