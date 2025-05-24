@@ -4,7 +4,7 @@ import { IoBagHandleSharp, IoLocationSharp, IoPersonCircleOutline } from "react-
 import { GiExitDoor } from "react-icons/gi";
 import { useAppSelector } from '../../hooks';
 import { useAuth } from '../../contexts/authContext';
-import { Loader, Popup } from '../shared';
+import { Popup } from '../shared';
 
 const menuItems = [
     { name: 'My Order', icon: <IoBagHandleSharp className="w-5 h-5" />, link: 'order' },

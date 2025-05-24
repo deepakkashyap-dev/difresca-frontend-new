@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { getOrderListApi } from '../../utils/Api/AppService/orderApi'
-import { Loader, Popup, AddressCard } from '../shared';
-
+import { Loader } from '../shared';
+import Lottie from 'lottie-react';
+import emptyBoxAni from '../../assets/animations/animation_empty_box.json';
 
 const statusColors = {
   "delivered": "text-green-600",
@@ -80,7 +81,23 @@ const OrderList = () => {
                 </div>
               </>
               :
-              <div>No order</div>
+              <div className="flex-1 p-2 lg:min-h-full">
+                <div className="flex flex-col gap-3 justify-center items-center text-center">
+                  <div className={"w-40 h-40 mb-4"}>
+                    <Lottie
+                      animationData={emptyBoxAni}
+                      loop={true}
+                      autoplay
+                    />
+                  </div>
+                  <h3 className="font-bold text-lg leading-tight">
+                    Since you haven't placed any orders yet, we don't have any order history for you.
+                  </h3>
+                  <p className="text-sm _text-default mb-2">
+                    Why not start shopping now and purchase some healthy vegetables to kick things off?
+                  </p>
+                </div>
+              </div>
           )
       }
     </div>
