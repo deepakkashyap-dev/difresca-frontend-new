@@ -29,6 +29,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const logout = () => {
         dispatch(authLogout());
+        // window.location.href = "/"; // Redirect to home page after logout
+        window.location.reload(); // Reload the page to reset the state
     };
 
     const handleSendOtp = async (data: LoginData) => {

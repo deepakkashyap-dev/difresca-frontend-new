@@ -352,9 +352,9 @@ input[type='radio'] {
 
 
 ._modal__location {
-  @apply md:rounded bg-white absolute top-0 left-0 md:top-[250px] md:left-1/4 z-20 w-full overflow-hidden;
+  @apply md:rounded bg-white absolute top-0 left-0 md:top-[86px] md:left-[100px] z-20 w-full overflow-hidden;
   box-shadow: var(--modal-shadow);
-  transform: translate(-50%, -50%);
+  transform: translate(0);
 }
 
 @keyframes shake {

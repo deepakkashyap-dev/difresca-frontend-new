@@ -94,11 +94,11 @@ const Header = () => {
   };
 
   // show location picker if currentAddress is not set
-  useEffect(() => {
-    if (!currentAddress) {
-      showLocationPicker()
-    }
-  }, [currentAddress]);
+  // useEffect(() => {
+  //   if (!currentAddress) {
+  //     showLocationPicker()
+  //   }
+  // }, [currentAddress]);
 
   return (
     <header className={`_nav px-2 sm:px-0 ${isSearchActive && 'shadow-header-inset'}`}>
@@ -123,7 +123,7 @@ const Header = () => {
                     </button>
                   </div>
                 ) : (
-                  <div className="relative w-full cursor-pointer" onClick={showLocationPicker}>
+                  <div className="relative w-full cursor-pointer pl-2" onClick={showLocationPicker}>
                     <span className="flex flex-row items-center mb-1">
                       <BsBuilding size={22} className="mr-1" /> Delivery Address
                     </span>

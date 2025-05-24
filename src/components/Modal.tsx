@@ -13,12 +13,13 @@ const Modal = () => {
   const [shake, setShake] = useState(false);
 
   const handleClose = () => {
-    if (type === 'locationPicker') {
-      setShake(true);
-      setTimeout(() => setShake(false), 2000); // match animation duration
-    } else {
-      dispatch(hideModal());
-    }
+    // if (type === 'locationPicker') {
+    //   setShake(true);
+    //   setTimeout(() => setShake(false), 2000); // match animation duration
+    // } else {
+    //   dispatch(hideModal());
+    // }
+    dispatch(hideModal());
   };
 
   const saveAddress = (location: any) => {
@@ -49,15 +50,15 @@ const Modal = () => {
       break;
     case 'locationPicker': //add temp address
       output = <LocationPicker onLocationSelected={saveAddress} />;
-      modalClass += " md:max-w-[600px] _modal__location ";
+      modalClass += " md:max-w-[500px] _modal__location ";
       break;
     default:
       output = null;
   }
 
   return (
-    <div className="fixed inset-0 h-screen w-screen z-50 overflow-hidden p-4">
-      <div className="absolute z-10 inset-0 bg-black bg-opacity-[.65]" onClick={handleClose} />
+    <div className="fixed inset-0 h-screen w-screen z-50 overflow-hidden">
+      <div className="absolute z-10 inset-0 bg-black bg-opacity-[.5]" onClick={handleClose} />
       <div className={modalClass}>
         {output}
       </div>

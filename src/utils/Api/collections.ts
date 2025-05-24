@@ -42,7 +42,7 @@ const checkout = {
 }
 
 const order = {
-  GET_ORDER_LIST: "/orders/get-order-list",
+  GET_ORDER_LIST: "/order/get-order-list/",
 }
 
 const profile = {

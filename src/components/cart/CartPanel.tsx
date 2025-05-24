@@ -11,6 +11,8 @@ import { AddressCard } from '../shared';
 import { updateDefaultAddressId, updateCurrentLocation } from '../../store/commonStates';
 import { Address as AddressType } from '../../utils/types';
 import { getDeliveryCharges } from '../../utils/Api/AppService/shippingApi';
+import emptyCart from '../../assets/animations/animation_empty_cart.json';
+import Lottie from 'lottie-react';
 
 const CartPanelItem = (props: CartItem) => {
   if (!props.product) return null;
@@ -174,7 +176,14 @@ const CartPanel = () => {
               {totalQuantity === 0 ? (
                 <div className="flex-1 bg-white p-6">
                   <div className="flex flex-col gap-3 justify-center items-center text-center">
-                    <img src="empty-cart.webp" alt="" className="h-36 w-36" />
+                    {/* <img src="empty-cart.webp" alt="" className="h-36 w-36" /> */}
+                    <div className={"w-40 h-40 mb-4"}>
+                      <Lottie
+                        animationData={emptyCart}
+                        loop={true}
+                        autoplay
+                      />
+                    </div>
                     <h3 className="font-bold text-lg leading-tight">
                       You don't have any items in your cart
                     </h3>
