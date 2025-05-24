@@ -62,7 +62,6 @@ const Header = () => {
             showLoginPopup();
           }
         } catch (error) {
-          console.error("Error refreshing token:", error);
           dispatch(logout());
           showLoginPopup();
         }

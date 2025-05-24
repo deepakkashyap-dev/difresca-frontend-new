@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from '../components/CheckOut/checkOutFOrm';
+import CheckoutForm from '../components/CheckOut/checkOutForm';
 import { getCheckoutSessionApi, createPaymentIntentApi } from '../utils/Api/AppService/checkoutApi';
 import { CheckoutSessionType } from '../utils/types';
 import { Loader } from '../components/shared'
@@ -26,14 +26,23 @@ const CheckoutPage = () => {
                 setCheckoutSession(data);
 
                 if (data.checkout_session_id && data.total) {
-                    const amount = Math.round(Number(data.total));
+                    const amount = Number(data.total);
                     const paymentData = await createPaymentIntentApi({
                         checkout_session_id: data.checkout_session_id,
                         amount: amount
                     });
                     setClientSecret(paymentData.clientSecret);
+
+                    // Update URL with paymentIntentId if not already present / make url more professional
+                    const url = new URL(window.location.href);
+                    if (!url.searchParams.get('payment_intent')) {
+                        url.searchParams.set('payment_intent', paymentData.clientSecret);
+                        url.searchParams.set('session', data.checkout_session_id);
+                        window.history.replaceState({}, '', url.toString());
+                    }
                 }
             } catch (error) {
+                setClientSecret('');
                 if (error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'error' in error.data) {
                     dispatch(showToast({ type: 'error', message: error.data.error }));
                 } else {
@@ -69,9 +78,9 @@ const CheckoutPage = () => {
                 {/* Payment Gateway Section */}
                 <div className="md:col-span-2 bg-white rounded-2xl shadow p-6">
                     <h2 className="text-2xl font-bold mb-6 text-green-700">Payment Information</h2>
-                    {clientSecret && (
+                    {clientSecret && checkoutSession && (
                         <Elements options={options} stripe={stripePromise}>
-                            <CheckoutForm amount={Number(checkoutSession.total)} />
+                            <CheckoutForm amount={Number(checkoutSession.total)} clientSecret={clientSecret} />
                         </Elements>
                     )}
 

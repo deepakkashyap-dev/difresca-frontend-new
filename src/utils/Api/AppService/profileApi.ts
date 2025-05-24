@@ -6,7 +6,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const addAddressApi = async (payload: any) => {
     try {
-        const response = await axiosInstance.post(profile.ADDRESS, { ...payload }, { loader: true });
+        const response = await axiosInstance.post(profile['ADDRESS'], { ...payload }, { loader: true });
         return response.data;
     } catch (error: any) {
         throw error.response;

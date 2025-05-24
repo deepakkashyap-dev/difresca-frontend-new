@@ -41,10 +41,14 @@ const checkout = {
   // GET_CHECKOUT_PAYMENT: "/checkout/get-checkout-payment",
 }
 
+const order = {
+  GET_ORDER_LIST: "/orders/get-order-list",
+}
+
 const profile = {
   // GET_PROFILE: "/profile/get-profile",
   // UPDATE_PROFILE: "/profile/update-profile",
   GET_ADDRESS_LIST: "/profile/get-address-list",
   ADDRESS: "/accounts/address/",
 }
-export { auth, dashboard, product, cart, shipping, profile, checkout };
+export { auth, dashboard, product, cart, shipping, profile, checkout, order };
