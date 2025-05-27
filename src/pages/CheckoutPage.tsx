@@ -43,8 +43,15 @@ const CheckoutPage = () => {
                 }
             } catch (error) {
                 setClientSecret('');
-                if (error && typeof error === 'object' && 'data' in error && error.data && typeof error.data === 'object' && 'error' in error.data) {
-                    dispatch(showToast({ type: 'error', message: error.data.error }));
+                if (
+                    error &&
+                    typeof error === 'object' &&
+                    'data' in error &&
+                    (error as any).data &&
+                    typeof (error as any).data === 'object' &&
+                    'error' in (error as any).data
+                ) {
+                    dispatch(showToast({ type: 'error', message: (error as any).data.error }));
                 } else {
                     console.error('Error in checkout process:', error);
                 }

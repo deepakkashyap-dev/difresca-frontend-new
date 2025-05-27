@@ -2,7 +2,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import store from '../../store';
 import { showLoader, hideLoader } from '../../store/ui';
 import { show as showModal } from '../../store/modal';
-
+import * as Sentry from "@sentry/react";
 // Extend AxiosRequestConfig to include showLoader flag
 declare module 'axios' {
     export interface AxiosRequestConfig {
@@ -74,6 +74,7 @@ axiosInstance.interceptors.response.use(
             console.error('Network Error:', error.message);
             return Promise.reject(new Error('Network Error: Please check your connection.'));
         }
+        Sentry.captureException(error);
 
         // Check if the error is due to a 401 Unauthorized status
         if (error.response.status === 401) {
